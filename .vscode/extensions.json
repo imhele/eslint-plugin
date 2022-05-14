@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "clinyong.vscode-css-modules",
+    "codezombiech.gitignore",
+    "dbaeumer.vscode-eslint",
+    "drknoxy.eslint-disable-snippets",
+    "eamodio.gitlens",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "gruntfuggly.todo-tree",
+    "meganrogge.template-string-converter",
+    "mikestead.dotenv",
+    "mkaufman.htmlhint",
+    "ms-ceintl.vscode-language-pack-zh-hans",
+    "streetsidesoftware.code-spell-checker",
+    "stylelint.vscode-stylelint",
+    "vscode-icons-team.vscode-icons"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@imhele/tsconfig",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./tsconfig.json",
+    "./legacy": "./legacy.json"
+  },
+  "scripts": {
+    "lint": "x-eslint .",
+    "lint:fix": "x-eslint --fix .",
+    "ts-check": "x-ts-check"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@imhele/rule-set-scripts": "workspace:*",
+    "eslint": "^8.15.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.7.1-rc"
+  },
+  "peerDependencies": {
+    "typescript": "^4.7.1-rc"
+  }
+}

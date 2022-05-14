@@ -1,0 +1,52 @@
+{
+  "name": "@imhele/eslint-plugin",
+  "version": "0.1.0",
+  "type": "commonjs",
+  "exports": {
+    ".": "./dist/index.cjs"
+  },
+  "scripts": {
+    "build": "x-rm dist && tsc -p tsconfig.json",
+    "lint": "x-eslint .",
+    "lint:fix": "x-eslint --fix .",
+    "ts-check": "x-ts-check"
+  },
+  "dependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/eslint-plugin": "^7.17.7",
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-react": "^7.16.7",
+    "@imhele/prettier-config": "workspace:*",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-file-progress": "^1.2.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks2": "^4.6.3"
+  },
+  "devDependencies": {
+    "@imhele/rule-set-scripts": "workspace:*",
+    "@types/eslint": "^8.4.2",
+    "@types/node": "^14.18.18",
+    "eslint": "^8.15.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.7.1-rc"
+  },
+  "peerDependencies": {
+    "eslint": "^8.15.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.7.1-rc"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  }
+}

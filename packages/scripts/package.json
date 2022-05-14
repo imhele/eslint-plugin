@@ -1,0 +1,46 @@
+{
+  "name": "@imhele/rule-set-scripts",
+  "type": "module",
+  "bin": {
+    "x-eslint": "bin/x-eslint.mjs",
+    "x-prettier": "bin/x-prettier.mjs",
+    "x-rm": "bin/x-rm.mjs",
+    "x-stylelint": "bin/x-stylelint.mjs",
+    "x-ts-check": "bin/x-ts-check.mjs"
+  },
+  "scripts": {
+    "lint": "x-eslint .",
+    "lint:fix": "x-eslint --fix .",
+    "ts-check": "x-ts-check"
+  },
+  "dependencies": {
+    "del": "^6.0.0",
+    "globby": "^13.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.18.18",
+    "eslint": "^8.15.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.7.1-rc"
+  },
+  "peerDependencies": {
+    "eslint": "^8.15.0",
+    "prettier": "^2.6.2",
+    "stylelint": "^14.8.2",
+    "typescript": "^4.7.1-rc"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    },
+    "prettier": {
+      "optional": true
+    },
+    "stylelint": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    }
+  }
+}
