@@ -1,6 +1,6 @@
 import BabelPresetEnv from '@babel/preset-env';
 import BabelPresetReact from '@babel/preset-react';
-import PrettierConfig from '@imhele/prettier-config';
+import * as PrettierConfig from '@imhele/prettier-config';
 import type { Linter } from 'eslint';
 
 export const JSFileExtensions: readonly string[] = [

@@ -1,5 +1,5 @@
 import type { Config } from 'stylelint';
-import core from './core.cjs';
+import * as core from './core.cjs';
 
 const config: Config = {
   ...core,

@@ -1,1 +1,3 @@
-export = import('./core.cjs');
+import * as core from './core.cjs';
+
+export = core;
