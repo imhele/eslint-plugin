@@ -9,8 +9,10 @@
     "x-ts-check": "bin/x-ts-check.mjs"
   },
   "scripts": {
+    "build": "node \"console.log('skipped')\"",
     "lint": "x-eslint .",
     "lint:fix": "x-eslint --fix .",
+    "prepublish": "pnpm run lint && pnpm run build",
     "ts-check": "x-ts-check"
   },
   "dependencies": {

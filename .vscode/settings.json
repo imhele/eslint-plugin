@@ -32,6 +32,7 @@
     "listr",
     "nuxt",
     "oclif",
+    "pnpm",
     "postpublish",
     "semibold",
     "stylelint",

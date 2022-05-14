@@ -9,6 +9,7 @@
     "build": "x-rm dist && tsc -p tsconfig.json",
     "lint": "x-eslint .",
     "lint:fix": "x-eslint --fix .",
+    "prepublish": "pnpm run lint && pnpm run build",
     "ts-check": "x-ts-check"
   },
   "dependencies": {
