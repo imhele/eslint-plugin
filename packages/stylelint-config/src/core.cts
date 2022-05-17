@@ -19,15 +19,6 @@ const config: Config = {
     'selector-class-pattern': '^[a-zA-Z0-9_-]*$',
     'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['global'] }],
   },
-  overrides: [
-    {
-      files: ['**/*.less'],
-      customSyntax: require.resolve('postcss-less'),
-      rules: {
-        'no-descending-specificity': null,
-      },
-    },
-  ],
 };
 
 export = config;
