@@ -6,7 +6,7 @@
     "experimentalDecorators": false,
     "importHelpers": false,
     "jsx": "preserve",
-    "lib": ["DOM", "ESNext"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noImplicitAny": true,
