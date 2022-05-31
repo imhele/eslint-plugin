@@ -49,7 +49,7 @@ export const core: Linter.Config = {
     'shared-node-browser': true,
     worker: false,
   },
-  ignorePatterns: ['!.*rc.*', 'build/', 'dist/', 'node_modules/', 'release/'],
+  ignorePatterns: ['!.*rc.*', '*.local.*', 'build/', 'dist/', 'node_modules/', 'release/'],
   plugins: [
     // https://www.npmjs.com/package/@babel/eslint-plugin
     '@babel',
@@ -59,7 +59,7 @@ export const core: Linter.Config = {
     'eslint-comments',
     // https://www.npmjs.com/package/eslint-plugin-filenames
     'promise',
-    // https://www.npmjs.com/package/eslint-plugin-filenames
+    // https://www.npmjs.com/package/eslint-plugin-prettier
     'prettier',
     // https://www.npmjs.com/package/eslint-plugin-file-progress
     'file-progress',
@@ -501,7 +501,7 @@ export const core: Linter.Config = {
     // https://eslint.org/docs/rules/max-lines-per-function
     'max-lines-per-function': 'off',
     // https://eslint.org/docs/rules/max-nested-callbacks
-    'max-nested-callbacks': ['warn', 4],
+    'max-nested-callbacks': ['warn', 9],
     // https://eslint.org/docs/rules/max-params
     'max-params': 'off',
     // https://eslint.org/docs/rules/max-statements
@@ -1032,8 +1032,10 @@ export const core: Linter.Config = {
       rules: {
         // https://github.com/benmosher/eslint-plugin-import/blob/master/config/typescript.js
         // subset of typescript rules
+        'array-callback-return': 'off',
         'no-undef': 'off',
         'prefer-named-capture-group': 'off',
+        'import/export': 'off',
         'import/namespace': 'off',
         // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-non-null-asserted-optional-chain.md
         '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
