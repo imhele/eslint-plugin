@@ -9,6 +9,7 @@ const config: Config = {
       customSyntax: 'postcss-less',
       rules: {
         'no-descending-specificity': null,
+        'no-duplicate-selectors': null,
       },
     },
   ],
