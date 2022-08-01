@@ -49,7 +49,15 @@ export const core: Linter.Config = {
     'shared-node-browser': true,
     worker: false,
   },
-  ignorePatterns: ['!.*rc.*', '*.local.*', 'build/', 'dist/', 'node_modules/', 'release/'],
+  ignorePatterns: [
+    '!.*rc.*',
+    '*.local.*',
+    'build/',
+    'coverage/',
+    'dist/',
+    'node_modules/',
+    'release/',
+  ],
   plugins: [
     // https://www.npmjs.com/package/@babel/eslint-plugin
     '@babel',

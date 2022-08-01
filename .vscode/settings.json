@@ -65,7 +65,7 @@
   "search.exclude": {
     "**/pnpm-lock.yaml": true,
     ".vscode/**": true,
-    "monorepo.code-workspace": true
+    "*.code-workspace": true
   },
   "search.useIgnoreFiles": true,
   "stylelint.enable": true,

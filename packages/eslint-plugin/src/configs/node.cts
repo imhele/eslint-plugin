@@ -16,13 +16,7 @@ export const node: Linter.Config = {
     // https://eslint.org/docs/rules/no-console
     'no-console': ['error', { allow: ['info', 'warn', 'error'] }],
     // https://eslint.org/docs/rules/no-restricted-modules
-    'no-restricted-modules': [
-      'error',
-      {
-        paths: [],
-        patterns: [],
-      },
-    ],
+    'no-restricted-modules': ['error', { paths: [], patterns: [] }],
     'import/default': 'off',
     'import/no-commonjs': 'off',
     'import/no-dynamic-require': 'off',

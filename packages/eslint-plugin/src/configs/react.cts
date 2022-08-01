@@ -382,7 +382,7 @@ export const react: Linter.Config = {
         stableRefHooks: '^use(ClickOutside|Constant|.*Ref|.*RefCallback|RefGetter)$',
         stableStateHooks: [
           '^use(.*Model|CountDown|DOMRect|Immer|SearchParam(s|List)?|Storage)$',
-          '^use(.*Scroll|Controlled|Debounce|RegularlyUpdated|Throttle)State$',
+          '^use(.+)State$',
           ['^useForceUpdate$', 0],
           ['^useToggle$', [1, 2]],
         ],
@@ -396,6 +396,7 @@ export const react: Linter.Config = {
       files: [...TSFilePatterns],
       rules: {
         'react/no-unescaped-entities': 'off',
+        'react/prop-types': 'off',
         'react/require-default-props': 'off',
       },
     },
