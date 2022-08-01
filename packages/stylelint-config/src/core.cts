@@ -17,7 +17,7 @@ const config: Config = {
     'number-max-precision': null,
     'rule-empty-line-before': null,
     'selector-class-pattern': '^[a-zA-Z0-9_-]*$',
-    'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['global'] }],
+    'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['global', 'local'] }],
   },
 };
 
