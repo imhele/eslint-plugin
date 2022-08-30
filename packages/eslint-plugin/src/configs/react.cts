@@ -17,8 +17,6 @@ export const react: Linter.Config = {
   ],
   env: {
     browser: true,
-    commonjs: false,
-    node: false,
   },
   rules: {
     /*

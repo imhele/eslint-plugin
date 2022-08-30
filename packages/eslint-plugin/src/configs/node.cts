@@ -1,11 +1,5 @@
 import type { Linter } from 'eslint';
-import {
-  FileExtensions,
-  MJSFileExtensions,
-  MTSFileExtensions,
-  mapElementWithPrefix,
-  TSFileExtensions,
-} from './core.cjs';
+import { FileExtensions, mapElementWithPrefix, TSFileExtensions } from './core.cjs';
 
 export const node: Linter.Config = {
   // https://www.npmjs.com/package/eslint-plugin-node
@@ -126,24 +120,6 @@ export const node: Linter.Config = {
         'node/no-unsupported-features/es-syntax': 'off',
         '@typescript-eslint/no-require-imports': 'off',
         '@typescript-eslint/no-var-requires': 'off',
-      },
-    },
-    {
-      files: mapElementWithPrefix([...MJSFileExtensions, ...MTSFileExtensions], '*'),
-      rules: {
-        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-commonjs.md
-        'import/no-commonjs': 'error',
-        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-dynamic-require.md
-        'import/no-dynamic-require': 'error',
-      },
-    },
-    {
-      files: mapElementWithPrefix(MTSFileExtensions, '*'),
-      rules: {
-        // https://typescript-eslint.io/rules/no-require-imports
-        '@typescript-eslint/no-require-imports': 'error',
-        // https://typescript-eslint.io/rules/no-var-requires
-        '@typescript-eslint/no-var-requires': 'error',
       },
     },
   ],

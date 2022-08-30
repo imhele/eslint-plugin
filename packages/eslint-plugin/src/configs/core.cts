@@ -1023,6 +1023,16 @@ export const core: Linter.Config = {
   overrides: [
     {
       files: mapElementWithPrefix(TSFileExtensions, '*'),
+      /**
+       * prefer type checker
+       */
+      env: {
+        browser: true,
+        commonjs: true,
+        jest: true,
+        mocha: true,
+        node: true,
+      },
       // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser
       parser: '@typescript-eslint/parser',
       parserOptions: {
@@ -1546,6 +1556,9 @@ export const core: Linter.Config = {
     },
     {
       files: mapElementWithPrefix([...CJSFileExtensions, ...CTSFileExtensions], '*'),
+      env: {
+        commonjs: true,
+      },
       rules: {
         // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-commonjs.md
         'import/no-commonjs': 'off',
@@ -1563,6 +1576,27 @@ export const core: Linter.Config = {
       },
     },
     {
+      files: mapElementWithPrefix([...MJSFileExtensions, ...MTSFileExtensions], '*'),
+      env: {
+        commonjs: false,
+      },
+      rules: {
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-commonjs.md
+        'import/no-commonjs': 'error',
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-dynamic-require.md
+        'import/no-dynamic-require': 'error',
+      },
+    },
+    {
+      files: mapElementWithPrefix(MTSFileExtensions, '*'),
+      rules: {
+        // https://typescript-eslint.io/rules/no-require-imports
+        '@typescript-eslint/no-require-imports': 'error',
+        // https://typescript-eslint.io/rules/no-var-requires
+        '@typescript-eslint/no-var-requires': 'error',
+      },
+    },
+    {
       files: ['*.test.*', '*.spec.*', '**/__test__/**'],
       env: {
         jest: true,
@@ -1577,6 +1611,10 @@ export const core: Linter.Config = {
     {
       files: ['*.worker.*'],
       env: { worker: true },
+    },
+    {
+      files: ['*service-worker.*'],
+      env: { serviceworker: true },
     },
     // 上述部分规则与 prettier 存在冲突的，以 prettier 为准
     {
