@@ -82,7 +82,7 @@ export const node: Linter.Config = {
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/no-unsupported-features/es-builtins.md
     'node/no-unsupported-features/es-builtins': 'error',
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/no-unsupported-features/es-syntax.md
-    'node/no-unsupported-features/es-syntax': 'error',
+    'node/no-unsupported-features/es-syntax': 'off',
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/no-unsupported-features/node-builtins.md
     'node/no-unsupported-features/node-builtins': 'error',
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/prefer-global/buffer.md
@@ -116,8 +116,6 @@ export const node: Linter.Config = {
         'node/handle-callback-err': 'off',
         // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/no-new-require.md
         'node/no-new-require': 'off',
-        // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/no-unsupported-features/es-syntax.md
-        'node/no-unsupported-features/es-syntax': 'off',
         '@typescript-eslint/no-require-imports': 'off',
         '@typescript-eslint/no-var-requires': 'off',
       },
