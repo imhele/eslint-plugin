@@ -1,5 +1,5 @@
 import type { Linter } from 'eslint';
-import { FileExtensions, mapElementWithPrefix, TSFileExtensions } from './core.cjs';
+import { mapElementWithPrefix, TSFileExtensions } from './core.cjs';
 
 export const node: Linter.Config = {
   // https://www.npmjs.com/package/eslint-plugin-node
@@ -27,18 +27,7 @@ export const node: Linter.Config = {
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/exports-style.md
     'node/exports-style': 'off',
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/file-extension-in-import.md
-    'node/file-extension-in-import': [
-      'error',
-      'always',
-      {
-        '.js': 'never',
-        '.jsx': 'never',
-        '.ts': 'never',
-        '.d.ts': 'never',
-        '.tsx': 'never',
-        tryExtensions: [...FileExtensions, '.json', '.node'],
-      },
-    ],
+    'node/file-extension-in-import': 'off',
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/global-require.md
     'node/global-require': 'off',
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/handle-callback-err.md
@@ -80,11 +69,11 @@ export const node: Linter.Config = {
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/no-unpublished-bin.md
     'node/no-unpublished-bin': 'error',
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/no-unsupported-features/es-builtins.md
-    'node/no-unsupported-features/es-builtins': 'error',
+    'node/no-unsupported-features/es-builtins': ['error', { version: '>=16.10.0' }],
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/no-unsupported-features/es-syntax.md
     'node/no-unsupported-features/es-syntax': 'off',
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/no-unsupported-features/node-builtins.md
-    'node/no-unsupported-features/node-builtins': 'error',
+    'node/no-unsupported-features/node-builtins': ['error', { version: '>=16.10.0' }],
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/prefer-global/buffer.md
     'node/prefer-global/buffer': 'off',
     // https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/prefer-global/console.md
