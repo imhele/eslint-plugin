@@ -1014,6 +1014,7 @@ export const core: Linter.Config = {
   },
   settings: {
     'import/extensions': FileExtensions,
+    'import/ignore': ['@babel/', 'typescript'],
     'import/resolver': { node: { extensions: FileExtensions } },
   },
   // https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns
