@@ -1,4 +1,4 @@
 {
   "root": true,
-  "extends": "plugin:@imhele/node"
+  "extends": "plugin:@imhele/core"
 }

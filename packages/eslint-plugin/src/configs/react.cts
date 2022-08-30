@@ -1,5 +1,5 @@
 import type { Linter } from 'eslint';
-import { JSFileExtensions, TSFileExtensions, TSFilePatterns } from './core.cjs';
+import { JSFileExtensions, mapElementWithPrefix, TSFileExtensions } from './core.cjs';
 
 export const react: Linter.Config = {
   plugins: [
@@ -21,9 +21,6 @@ export const react: Linter.Config = {
     node: false,
   },
   rules: {
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-nodejs-modules.md
-    'import/no-nodejs-modules': 'error',
-
     /*
      * react
      */
@@ -35,11 +32,11 @@ export const react: Linter.Config = {
         rule: '^(is|has|should)[A-Z]([A-Za-z0-9]?)+',
       },
     ],
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/button-has-type.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/button-has-type.md
     'react/button-has-type': 'error',
     // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/default-props-match-prop-types.md
     'react/default-props-match-prop-types': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/destructuring-assignment.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/destructuring-assignment.md
     'react/destructuring-assignment': ['error', 'always', { ignoreClassFields: true }],
 
     /*
@@ -84,7 +81,7 @@ export const react: Linter.Config = {
      *     ]
      *   }
      * ],
-     * https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/forbid-dom-props.md
+     * https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/forbid-dom-props.md
      */
     'react/forbid-dom-props': 'off',
 
@@ -131,7 +128,7 @@ export const react: Linter.Config = {
     'react/forbid-foreign-prop-types': 'error',
 
     /*
-     * https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-access-state-in-setstate.md
+     * https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-access-state-in-setstate.md
      * @TIPS
      * this.setState({value: this.state.value + 1});
      * ->
@@ -139,7 +136,7 @@ export const react: Linter.Config = {
      */
     'react/no-access-state-in-setstate': 'error',
     // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-array-index-key.md
-    'react/no-array-index-key': 'warn',
+    'react/no-array-index-key': 'error',
     // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-children-prop.md
     'react/no-children-prop': 'error',
 
@@ -180,13 +177,13 @@ export const react: Linter.Config = {
     'react/no-typos': 'error',
     // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-string-refs.md
     'react/no-string-refs': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-this-in-sfc.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-this-in-sfc.md
     'react/no-this-in-sfc': 'error',
     // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-unescaped-entities.md
     'react/no-unescaped-entities': 'error',
     // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-unknown-property.md
     'react/no-unknown-property': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-unsafe.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-unsafe.md
     'react/no-unsafe': ['error', { checkAliases: true }],
     // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-unused-prop-types.md
     'react/no-unused-prop-types': 'error',
@@ -289,20 +286,20 @@ export const react: Linter.Config = {
         },
       },
     ],
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/sort-prop-types.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/sort-prop-types.md
     'react/sort-prop-types': 'off',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/style-prop-object.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/style-prop-object.md
     'react/style-prop-object': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/void-dom-elements-no-children.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/void-dom-elements-no-children.md
     'react/void-dom-elements-no-children': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-boolean-value.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-boolean-value.md
     'react/jsx-boolean-value': ['error', 'never'],
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-filename-extension.md
     'react/jsx-filename-extension': [
       'error',
       { extensions: [...JSFileExtensions, ...TSFileExtensions].filter(ext => ext.endsWith('sx')) },
     ],
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-handler-names.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-handler-names.md
     // does not support this.#privateMethod
     'react/jsx-handler-names': 'off',
     // 'react/jsx-handler-names': [
@@ -312,11 +309,11 @@ export const react: Linter.Config = {
     //     eventHandlerPropPrefix: 'on',
     //   },
     // ],
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-key.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-key.md
     'react/jsx-key': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-max-depth.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-max-depth.md
     'react/jsx-max-depth': 'off',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-no-bind.md
     'react/jsx-no-bind': [
       'error',
       {
@@ -324,17 +321,17 @@ export const react: Linter.Config = {
         ignoreRefs: true,
       },
     ],
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-comment-textnodes.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-no-comment-textnodes.md
     'react/jsx-no-comment-textnodes': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-duplicate-props.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-no-duplicate-props.md
     'react/jsx-no-duplicate-props': ['error', { ignoreCase: true }],
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-literals.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-no-literals.md
     'react/jsx-no-literals': 'off',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-target-blank.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-no-target-blank.md
     'react/jsx-no-target-blank': 'off',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-undef.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-no-undef.md
     'react/jsx-no-undef': ['error', { allowGlobals: true }],
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-curly-brace-presence.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-curly-brace-presence.md
     'react/jsx-curly-brace-presence': 'off',
 
     /*
@@ -342,40 +339,40 @@ export const react: Linter.Config = {
      *   "error",
      *   "never"
      * ],
-     * https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-fragments.md
+     * https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-fragments.md
      * @TODO bug
      */
     'react/jsx-fragments': 'off',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-pascal-case.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-pascal-case.md
     'react/jsx-pascal-case': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-sort-default-props.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-sort-default-props.md
     'react/jsx-sort-default-props': 'off',
 
     /*
-     * https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-sort-props.md
+     * https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-sort-props.md
      * @TODO bug: conflict with prettier
      */
     'react/jsx-sort-props': 'off',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-uses-react.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-uses-react.md
     // react 17
     'react/jsx-uses-react': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-uses-vars.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-uses-vars.md
     'react/jsx-uses-vars': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-unused-state.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/no-unused-state.md
     'react/no-unused-state': 'error',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-props-no-spreading.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/jsx-props-no-spreading.md
     'react/jsx-props-no-spreading': 'off',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-read-only-props.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/prefer-read-only-props.md
     'react/prefer-read-only-props': 'off',
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/state-in-constructor.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/state-in-constructor.md
     'react/state-in-constructor': ['error', 'never'],
-    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/static-property-placement.md
+    // https://github.com/yannickcr/eslint-plugin-react/blob/HEAD/docs/rules/static-property-placement.md
     'react/static-property-placement': 'error',
     // // https://reactjs.org/docs/hooks-rules.html
     'react-hooks2/rules-of-hooks': 'error',
     // // https://github.com/facebook/react/issues/16006
     'react-hooks2/exhaustive-deps': [
-      'warn',
+      'error',
       {
         additionalHooks: '^use(ComponentDidUpdate|ImmedEffect)$',
         immediateRefHooks: '^use(.*Ref)$',
@@ -393,7 +390,7 @@ export const react: Linter.Config = {
   // https://eslint.org/docs/user-guide/migrating-to-6.0.0#-overrides-in-an-extended-config-file-can-now-be-overridden-by-a-parent-config-file
   overrides: [
     {
-      files: [...TSFilePatterns],
+      files: mapElementWithPrefix(TSFileExtensions, '*'),
       rules: {
         'react/no-unescaped-entities': 'off',
         'react/prop-types': 'off',

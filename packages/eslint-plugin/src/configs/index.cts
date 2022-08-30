@@ -1,3 +1,3 @@
-export * from './core.cjs';
-export * from './node.cjs';
-export * from './react.cjs';
+export { core } from './core.cjs';
+export { node } from './node.cjs';
+export { react } from './react.cjs';

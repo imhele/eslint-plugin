@@ -3,33 +3,39 @@ import BabelPresetReact from '@babel/preset-react';
 import PrettierConfig from '@imhele/prettier-config';
 import type { Linter } from 'eslint';
 
+export const CJSFileExtensions: readonly string[] = ['.cjs', '.cjsx'];
+export const MJSFileExtensions: readonly string[] = ['.mjs', '.mjsx'];
+
 export const JSFileExtensions: readonly string[] = [
   '.js',
   '.jsx',
-  '.mjs',
-  '.mjsx',
-  '.cjs',
-  '.cjsx',
+  ...MJSFileExtensions,
+  ...CJSFileExtensions,
 ];
+
+export const CTSFileExtensions: readonly string[] = ['.cts', '.ctsx'];
+export const MTSFileExtensions: readonly string[] = ['.mts', '.mtsx'];
 
 export const TSFileExtensions: readonly string[] = [
   '.ts',
   '.tsx',
-  '.mts',
-  '.mtsx',
-  '.cts',
-  '.ctsx',
+  ...MTSFileExtensions,
+  ...CTSFileExtensions,
 ];
-
-export const DTSFileExtensions: readonly string[] = TSFileExtensions.map(ext => `.d${ext}`);
-
-export const TSFilePatterns: readonly string[] = TSFileExtensions.map(ext => `*${ext}`);
 
 export const FileExtensions: readonly string[] = [
   ...JSFileExtensions,
   ...TSFileExtensions,
-  ...DTSFileExtensions,
+  ...mapElementWithPrefix(TSFileExtensions, '.d'),
 ];
+
+export function mapElementWithPrefix<T extends readonly string[], U extends string>(
+  input: T,
+  prefix: U,
+): { -readonly [Key in keyof T]: `${U}${T[Key]}` };
+export function mapElementWithPrefix(input: readonly string[], prefix: string): string[] {
+  return input.map(element => `${prefix}${element}`);
+}
 
 export const core: Linter.Config = {
   parser: '@babel/eslint-parser',
@@ -83,51 +89,65 @@ export const core: Linter.Config = {
     'plugin:promise/recommended',
   ],
   rules: {
-    // https://eslint.org/docs/rules/for-direction
+    // https://eslint.org/docs/latest/rules/default-case-last
+    'default-case-last': 'off',
+    // https://eslint.org/docs/latest/rules/default-param-last
+    'default-param-last': 'off',
+    // https://eslint.org/docs/latest/rules/for-direction
     'for-direction': 'off',
-    // https://eslint.org/docs/rules/getter-return
+    // https://eslint.org/docs/latest/rules/getter-return
     'getter-return': ['error', { allowImplicit: true }],
-    // https://eslint.org/docs/rules/no-async-promise-executor
+    // https://eslint.org/docs/latest/rules/grouped-accessor-pairs
+    'grouped-accessor-pairs': 'off',
+    // https://eslint.org/docs/latest/rules/no-async-promise-executor
     'no-async-promise-executor': 'error',
-    // https://eslint.org/docs/rules/no-await-in-loop
+    // https://eslint.org/docs/latest/rules/no-await-in-loop
     'no-await-in-loop': 'off',
-    // https://eslint.org/docs/rules/no-compare-neg-zero
+    // https://eslint.org/docs/latest/rules/no-compare-neg-zero
     'no-compare-neg-zero': 'error',
-    // https://eslint.org/docs/rules/no-cond-assign
+    // https://eslint.org/docs/latest/rules/no-cond-assign
     'no-cond-assign': ['error', 'always'],
-    // https://eslint.org/docs/rules/no-console
+    // https://eslint.org/docs/latest/rules/no-console
     'no-console': 'error',
-    // https://eslint.org/docs/rules/no-constant-condition
+    // https://eslint.org/docs/latest/rules/no-constant-binary-expression
+    'no-constant-binary-expression': 'off',
+    // https://eslint.org/docs/latest/rules/no-constant-condition
     'no-constant-condition': 'error',
-    // https://eslint.org/docs/rules/no-control-regex
+    // https://eslint.org/docs/latest/rules/no-constructor-return
+    'no-constructor-return': 'off',
+    // https://eslint.org/docs/latest/rules/no-control-regex
     'no-control-regex': 'error',
-    // https://eslint.org/docs/rules/no-debugger
+    // https://eslint.org/docs/latest/rules/no-debugger
     'no-debugger': 'error',
-    // https://eslint.org/docs/rules/no-dupe-args
+    // https://eslint.org/docs/latest/rules/no-dupe-args
     'no-dupe-args': 'error',
-    // https://eslint.org/docs/rules/no-dupe-keys
+    // https://eslint.org/docs/latest/rules/no-dupe-else-if
+    'no-dupe-else-if': 'error',
+    // https://eslint.org/docs/latest/rules/no-dupe-keys
     'no-dupe-keys': 'error',
-    // https://eslint.org/docs/rules/no-duplicate-case
+    // https://eslint.org/docs/latest/rules/no-duplicate-case
     'no-duplicate-case': 'error',
-    // https://eslint.org/docs/rules/no-empty
+    // https://eslint.org/docs/latest/rules/no-empty
     'no-empty': ['error', { allowEmptyCatch: true }],
-    // https://eslint.org/docs/rules/no-empty-character-class
+    // https://eslint.org/docs/latest/rules/no-empty-character-class
     'no-empty-character-class': 'error',
-    // https://eslint.org/docs/rules/no-ex-assign
+    // https://eslint.org/docs/latest/rules/no-ex-assign
     'no-ex-assign': 'error',
-    // https://eslint.org/docs/rules/no-extra-boolean-cast
+    // https://eslint.org/docs/latest/rules/no-extra-boolean-cast
     'no-extra-boolean-cast': 'error',
-    // https://eslint.org/docs/rules/no-extra-parens
+    // https://eslint.org/docs/latest/rules/no-extra-parens
     'no-extra-parens': ['error', 'all'],
-    // https://eslint.org/docs/rules/no-extra-semi
+    // https://eslint.org/docs/latest/rules/no-extra-semi
     'no-extra-semi': 'error',
-    // https://eslint.org/docs/rules/no-func-assign
+    // https://eslint.org/docs/latest/rules/no-func-assign
     'no-func-assign': 'error',
-    // https://eslint.org/docs/rules/no-inner-declarations
+    // https://eslint.org/docs/latest/rules/no-import-assign
+    'no-import-assign': 'error',
+    // https://eslint.org/docs/latest/rules/no-inner-declarations
     'no-inner-declarations': ['error', 'both'],
-    // https://eslint.org/docs/rules/no-invalid-regexp
+    // https://eslint.org/docs/latest/rules/no-invalid-regexp
     'no-invalid-regexp': ['error', { allowConstructorFlags: [] }],
-    // https://eslint.org/docs/rules/no-irregular-whitespace
+    // https://eslint.org/docs/latest/rules/no-irregular-whitespace
     'no-irregular-whitespace': [
       'error',
       {
@@ -137,160 +157,166 @@ export const core: Linter.Config = {
         skipRegExps: true,
       },
     ],
-    // https://eslint.org/docs/rules/no-misleading-character-class
+    // https://eslint.org/docs/latest/rules/no-loss-of-precision
+    'no-loss-of-precision': 'error',
+    // https://eslint.org/docs/latest/rules/no-misleading-character-class
     'no-misleading-character-class': 'error',
-    // https://eslint.org/docs/rules/no-obj-calls
+    // https://eslint.org/docs/latest/rules/no-obj-calls
     'no-obj-calls': 'error',
-    // https://eslint.org/docs/rules/no-prototype-builtins
+    // https://eslint.org/docs/latest/rules/no-prototype-builtins
     'no-prototype-builtins': 'error',
-    // https://eslint.org/docs/rules/no-regex-spaces
+    // https://eslint.org/docs/latest/rules/no-regex-spaces
     'no-regex-spaces': 'error',
-    // https://eslint.org/docs/rules/no-sparse-arrays
+    // https://eslint.org/docs/latest/rules/no-restricted-exports
+    'no-restricted-exports': 'off',
+    // https://eslint.org/docs/latest/rules/no-setter-return
+    'no-setter-return': 'error',
+    // https://eslint.org/docs/latest/rules/no-sparse-arrays
     'no-sparse-arrays': 'error',
-    // https://eslint.org/docs/rules/no-template-curly-in-string
+    // https://eslint.org/docs/latest/rules/no-template-curly-in-string
     'no-template-curly-in-string': 'error',
-    // https://eslint.org/docs/rules/no-unexpected-multiline
+    // https://eslint.org/docs/latest/rules/no-unexpected-multiline
     'no-unexpected-multiline': 'error',
-    // https://eslint.org/docs/rules/no-unreachable
+    // https://eslint.org/docs/latest/rules/no-unreachable
     'no-unreachable': 'error',
-    // https://eslint.org/docs/rules/no-unsafe-finally
+    // https://eslint.org/docs/latest/rules/no-unreachable-loop
+    'no-unreachable-loop': 'off',
+    // https://eslint.org/docs/latest/rules/no-unsafe-finally
     'no-unsafe-finally': 'error',
-    // https://eslint.org/docs/rules/no-unsafe-negation
+    // https://eslint.org/docs/latest/rules/no-unsafe-negation
     'no-unsafe-negation': 'error',
-    // https://eslint.org/docs/rules/require-atomic-updates
-    // @bug https://github.com/eslint/eslint/issues/11899
-    'require-atomic-updates': 'warn',
-    // 'require-atomic-updates': 'error',
-    // https://eslint.org/docs/rules/use-isnan
+    // https://eslint.org/docs/latest/rules/require-atomic-updates
+    'require-atomic-updates': ['error', { allowProperties: true }],
+    // https://eslint.org/docs/latest/rules/use-isnan
     'use-isnan': 'error',
-    // https://eslint.org/docs/rules/valid-typeof
+    // https://eslint.org/docs/latest/rules/valid-typeof
     'valid-typeof': ['error', { requireStringLiterals: true }],
 
     /*
      * Best Practices
-     * https://eslint.org/docs/rules/accessor-pairs
+     * https://eslint.org/docs/latest/rules/accessor-pairs
      */
     'accessor-pairs': 'error',
-    // https://eslint.org/docs/rules/array-callback-return
+    // https://eslint.org/docs/latest/rules/array-callback-return
     'array-callback-return': ['error', { allowImplicit: true }],
-    // https://eslint.org/docs/rules/block-scoped-var
+    // https://eslint.org/docs/latest/rules/block-scoped-var
     'block-scoped-var': 'error',
-    // https://eslint.org/docs/rules/class-methods-use-this
+    // https://eslint.org/docs/latest/rules/class-methods-use-this
     'class-methods-use-this': 'off',
-    // https://eslint.org/docs/rules/complexity
-    complexity: ['warn', { max: 30 }],
-    // https://eslint.org/docs/rules/consistent-return
+    // https://eslint.org/docs/latest/rules/complexity
+    complexity: ['error', { max: 30 }],
+    // https://eslint.org/docs/latest/rules/consistent-return
     'consistent-return': 'off',
-    // https://eslint.org/docs/rules/curly
+    // https://eslint.org/docs/latest/rules/curly
     curly: ['error', 'multi-or-nest', 'consistent'],
-    // https://eslint.org/docs/rules/default-case
+    // https://eslint.org/docs/latest/rules/default-case
     'default-case': 'error',
-    // https://eslint.org/docs/rules/dot-location
+    // https://eslint.org/docs/latest/rules/dot-location
     'dot-location': ['error', 'property'],
-    // https://eslint.org/docs/rules/dot-notation
+    // https://eslint.org/docs/latest/rules/dot-notation
     'dot-notation': ['error', { allowKeywords: true }],
-    // https://eslint.org/docs/rules/eqeqeq
+    // https://eslint.org/docs/latest/rules/eqeqeq
     eqeqeq: ['error', 'always'],
-    // https://eslint.org/docs/rules/guard-for-in
+    // https://eslint.org/docs/latest/rules/guard-for-in
     'guard-for-in': 'off',
-    // https://eslint.org/docs/rules/max-classes-per-file
+    // https://eslint.org/docs/latest/rules/max-classes-per-file
     'max-classes-per-file': 'off',
-    // https://eslint.org/docs/rules/no-alert
+    // https://eslint.org/docs/latest/rules/no-alert
     'no-alert': 'error',
-    // https://eslint.org/docs/rules/no-caller
+    // https://eslint.org/docs/latest/rules/no-caller
     'no-caller': 'error',
-    // https://eslint.org/docs/rules/no-case-declarations
+    // https://eslint.org/docs/latest/rules/no-case-declarations
     'no-case-declarations': 'error',
-    // https://eslint.org/docs/rules/no-div-regex
+    // https://eslint.org/docs/latest/rules/no-div-regex
     'no-div-regex': 'error',
-    // https://eslint.org/docs/rules/no-else-return
+    // https://eslint.org/docs/latest/rules/no-else-return
     'no-else-return': 'off',
-    // https://eslint.org/docs/rules/no-empty-function
+    // https://eslint.org/docs/latest/rules/no-empty-function
     'no-empty-function': 'off',
-    // https://eslint.org/docs/rules/no-empty-pattern
+    // https://eslint.org/docs/latest/rules/no-empty-pattern
     'no-empty-pattern': 'error',
-    // https://eslint.org/docs/rules/no-eq-null
+    // https://eslint.org/docs/latest/rules/no-eq-null
     'no-eq-null': 'off',
-    // https://eslint.org/docs/rules/no-eval
+    // https://eslint.org/docs/latest/rules/no-eval
     'no-eval': 'error',
-    // https://eslint.org/docs/rules/no-extend-native
+    // https://eslint.org/docs/latest/rules/no-extend-native
     'no-extend-native': 'error',
-    // https://eslint.org/docs/rules/no-extra-bind
+    // https://eslint.org/docs/latest/rules/no-extra-bind
     'no-extra-bind': 'error',
-    // https://eslint.org/docs/rules/no-extra-label
+    // https://eslint.org/docs/latest/rules/no-extra-label
     'no-extra-label': 'error',
-    // https://eslint.org/docs/rules/no-fallthrough
+    // https://eslint.org/docs/latest/rules/no-fallthrough
     'no-fallthrough': 'error',
-    // https://eslint.org/docs/rules/no-floating-decimal
+    // https://eslint.org/docs/latest/rules/no-floating-decimal
     'no-floating-decimal': 'error',
-    // https://eslint.org/docs/rules/no-global-assign
+    // https://eslint.org/docs/latest/rules/no-global-assign
     'no-global-assign': 'error',
-    // https://eslint.org/docs/rules/no-implicit-coercion
+    // https://eslint.org/docs/latest/rules/no-implicit-coercion
     'no-implicit-coercion': ['error', { allow: ['!!'] }],
-    // https://eslint.org/docs/rules/no-implicit-globals
+    // https://eslint.org/docs/latest/rules/no-implicit-globals
     'no-implicit-globals': 'error',
-    // https://eslint.org/docs/rules/no-implied-eval
+    // https://eslint.org/docs/latest/rules/no-implied-eval
     'no-implied-eval': 'error',
-    // https://eslint.org/docs/rules/no-invalid-this
+    // https://eslint.org/docs/latest/rules/no-invalid-this
     'no-invalid-this': 'off',
     '@babel/no-invalid-this': 'error',
-    // https://eslint.org/docs/rules/no-iterator
+    // https://eslint.org/docs/latest/rules/no-iterator
     'no-iterator': 'error',
-    // https://eslint.org/docs/rules/no-labels
+    // https://eslint.org/docs/latest/rules/no-labels
     'no-labels': 'off',
-    // https://eslint.org/docs/rules/no-lone-blocks
+    // https://eslint.org/docs/latest/rules/no-lone-blocks
     'no-lone-blocks': 'error',
-    // https://eslint.org/docs/rules/no-loop-func
+    // https://eslint.org/docs/latest/rules/no-loop-func
     'no-loop-func': 'error',
-    // https://eslint.org/docs/rules/no-magic-numbers
+    // https://eslint.org/docs/latest/rules/no-magic-numbers
     'no-magic-numbers': 'off',
-    // https://eslint.org/docs/rules/no-multi-spaces
+    // https://eslint.org/docs/latest/rules/no-multi-spaces
     'no-multi-spaces': 'error',
-    // https://eslint.org/docs/rules/no-multi-str
+    // https://eslint.org/docs/latest/rules/no-multi-str
     'no-multi-str': 'error',
-    // https://eslint.org/docs/rules/no-new
+    // https://eslint.org/docs/latest/rules/no-new
     'no-new': 'error',
-    // https://eslint.org/docs/rules/no-new-func
+    // https://eslint.org/docs/latest/rules/no-new-func
     'no-new-func': 'error',
-    // https://eslint.org/docs/rules/no-new-wrappers
+    // https://eslint.org/docs/latest/rules/no-new-wrappers
     'no-new-wrappers': 'error',
-    // https://eslint.org/docs/rules/no-octal
+    // https://eslint.org/docs/latest/rules/no-nonoctal-decimal-escape
+    'no-nonoctal-decimal-escape': 'error',
+    // https://eslint.org/docs/latest/rules/no-octal
     'no-octal': 'error',
-    // https://eslint.org/docs/rules/no-octal-escape
+    // https://eslint.org/docs/latest/rules/no-octal-escape
     'no-octal-escape': 'error',
-    // https://eslint.org/docs/rules/no-param-reassign
+    // https://eslint.org/docs/latest/rules/no-param-reassign
     'no-param-reassign': 'off',
-    // https://eslint.org/docs/rules/no-proto
+    // https://eslint.org/docs/latest/rules/no-promise-executor-return
+    'no-promise-executor-return': 'error',
+    // https://eslint.org/docs/latest/rules/no-proto
     'no-proto': 'error',
-    // https://eslint.org/docs/rules/no-redeclare
+    // https://eslint.org/docs/latest/rules/no-redeclare
     'no-redeclare': ['error', { builtinGlobals: true }],
-    // https://eslint.org/docs/rules/no-restricted-properties
-    'no-restricted-properties': [
-      'error',
-      {
-        property: '__defineGetter__',
-        message: 'Please use Object.defineProperty instead.',
-      },
-    ],
-    // https://eslint.org/docs/rules/no-return-assign
+    // https://eslint.org/docs/latest/rules/no-restricted-properties
+    'no-restricted-properties': 'off',
+    // https://eslint.org/docs/latest/rules/no-return-assign
     'no-return-assign': ['error', 'except-parens'],
-    // https://eslint.org/docs/rules/no-return-await
+    // https://eslint.org/docs/latest/rules/no-return-await
     'no-return-await': 'off',
-    // https://eslint.org/docs/rules/no-script-url
+    // https://eslint.org/docs/latest/rules/no-script-url
     'no-script-url': 'error',
-    // https://eslint.org/docs/rules/no-self-assign
+    // https://eslint.org/docs/latest/rules/no-self-assign
     'no-self-assign': 'error',
-    // https://eslint.org/docs/rules/no-self-compare
+    // https://eslint.org/docs/latest/rules/no-self-compare
     'no-self-compare': 'error',
-    // https://eslint.org/docs/rules/no-sequences
+    // https://eslint.org/docs/latest/rules/no-sequences
     // @bug conflict with prettier
     'no-sequences': 'off',
     // 'no-sequences': 'error',
-    // https://eslint.org/docs/rules/no-throw-literal
+    // https://eslint.org/docs/latest/rules/no-throw-literal
     'no-throw-literal': 'off',
-    // https://eslint.org/docs/rules/no-unmodified-loop-condition
+    // https://eslint.org/docs/latest/rules/no-unmodified-loop-condition
     'no-unmodified-loop-condition': 'error',
-    // https://eslint.org/docs/rules/no-unused-expressions
+    // https://eslint.org/docs/latest/rules/no-unsafe-optional-chaining
+    'no-unsafe-optional-chaining': 'error',
+    // https://eslint.org/docs/latest/rules/no-unused-expressions
     'no-unused-expressions': 'off',
     '@babel/no-unused-expressions': [
       'error',
@@ -299,55 +325,65 @@ export const core: Linter.Config = {
         enforceForJSX: true,
       },
     ],
-    // https://eslint.org/docs/rules/no-unused-labels
+    // https://eslint.org/docs/latest/rules/no-unused-labels
     'no-unused-labels': 'error',
-    // https://eslint.org/docs/rules/no-useless-call
+    // https://eslint.org/docs/latest/rules/no-unused-private-class-members
+    'no-unused-private-class-members': 'off',
+    // https://eslint.org/docs/latest/rules/no-useless-backreference
+    'no-useless-backreference': 'error',
+    // https://eslint.org/docs/latest/rules/no-useless-call
     'no-useless-call': 'error',
-    // https://eslint.org/docs/rules/no-useless-catch
+    // https://eslint.org/docs/latest/rules/no-useless-catch
     'no-useless-catch': 'error',
-    // https://eslint.org/docs/rules/no-useless-concat
+    // https://eslint.org/docs/latest/rules/no-useless-concat
     'no-useless-concat': 'error',
-    // https://eslint.org/docs/rules/no-useless-escape
+    // https://eslint.org/docs/latest/rules/no-useless-escape
     'no-useless-escape': 'error',
-    // https://eslint.org/docs/rules/no-useless-return
+    // https://eslint.org/docs/latest/rules/no-useless-return
     'no-useless-return': 'error',
-    // https://eslint.org/docs/rules/no-void
+    // https://eslint.org/docs/latest/rules/no-void
     'no-void': 'error',
-    // https://eslint.org/docs/rules/no-warning-comments
+    // https://eslint.org/docs/latest/rules/no-warning-comments
     'no-warning-comments': ['error', { terms: ['@TEMP'] }],
-    // https://eslint.org/docs/rules/no-with
+    // https://eslint.org/docs/latest/rules/no-with
     'no-with': 'error',
-    // https://eslint.org/docs/rules/prefer-named-capture-group
+    // https://eslint.org/docs/latest/rules/prefer-exponentiation-operator
+    'prefer-exponentiation-operator': 'error',
+    // https://eslint.org/docs/latest/rules/prefer-named-capture-group
     'prefer-named-capture-group': 'off',
-    // https://eslint.org/docs/rules/prefer-promise-reject-errors
+    // https://eslint.org/docs/latest/rules/prefer-object-has-own
+    'prefer-object-has-own': 'error',
+    // https://eslint.org/docs/latest/rules/prefer-promise-reject-errors
     'prefer-promise-reject-errors': 'off',
-    // https://eslint.org/docs/rules/radix
+    // https://eslint.org/docs/latest/rules/prefer-regex-literals
+    'prefer-regex-literals': 'error',
+    // https://eslint.org/docs/latest/rules/radix
     radix: 'error',
-    // https://eslint.org/docs/rules/require-await
+    // https://eslint.org/docs/latest/rules/require-await
     'require-await': 'error',
-    // https://eslint.org/docs/rules/require-unicode-regexp
+    // https://eslint.org/docs/latest/rules/require-unicode-regexp
     'require-unicode-regexp': 'off',
-    // https://eslint.org/docs/rules/vars-on-top
+    // https://eslint.org/docs/latest/rules/vars-on-top
     'vars-on-top': 'off',
-    // https://eslint.org/docs/rules/wrap-iife
+    // https://eslint.org/docs/latest/rules/wrap-iife
     'wrap-iife': ['error', 'inside'],
-    // https://eslint.org/docs/rules/yoda
+    // https://eslint.org/docs/latest/rules/yoda
     yoda: 'off',
-    // https://eslint.org/docs/rules/strict
+    // https://eslint.org/docs/latest/rules/strict
     strict: ['error', 'never'],
 
     /*
      * Variables
-     * https://eslint.org/docs/rules/init-declarations
+     * https://eslint.org/docs/latest/rules/init-declarations
      */
     'init-declarations': 'off',
-    // https://eslint.org/docs/rules/no-delete-var
+    // https://eslint.org/docs/latest/rules/no-delete-var
     'no-delete-var': 'off',
-    // https://eslint.org/docs/rules/no-label-var
+    // https://eslint.org/docs/latest/rules/no-label-var
     'no-label-var': 'error',
-    // https://eslint.org/docs/rules/no-restricted-globals
+    // https://eslint.org/docs/latest/rules/no-restricted-globals
     'no-restricted-globals': 'error',
-    // https://eslint.org/docs/rules/no-shadow
+    // https://eslint.org/docs/latest/rules/no-shadow
     'no-shadow': [
       'error',
       {
@@ -355,15 +391,15 @@ export const core: Linter.Config = {
         builtinGlobals: false,
       },
     ],
-    // https://eslint.org/docs/rules/no-shadow-restricted-names
+    // https://eslint.org/docs/latest/rules/no-shadow-restricted-names
     'no-shadow-restricted-names': 'error',
-    // https://eslint.org/docs/rules/no-undef
+    // https://eslint.org/docs/latest/rules/no-undef
     'no-undef': 'error',
-    // https://eslint.org/docs/rules/no-undef-init
+    // https://eslint.org/docs/latest/rules/no-undef-init
     'no-undef-init': 'error',
-    // https://eslint.org/docs/rules/no-undefined
+    // https://eslint.org/docs/latest/rules/no-undefined
     'no-undefined': 'off',
-    // https://eslint.org/docs/rules/no-unused-vars
+    // https://eslint.org/docs/latest/rules/no-unused-vars
     'no-unused-vars': [
       'error',
       {
@@ -374,7 +410,7 @@ export const core: Linter.Config = {
         vars: 'all',
       },
     ],
-    // https://eslint.org/docs/rules/no-use-before-define
+    // https://eslint.org/docs/latest/rules/no-use-before-define
     'no-use-before-define': [
       'error',
       {
@@ -386,18 +422,18 @@ export const core: Linter.Config = {
 
     /*
      * Stylistic Issues
-     * https://eslint.org/docs/rules/array-bracket-newline
+     * https://eslint.org/docs/latest/rules/array-bracket-newline
      */
     'array-bracket-newline': ['error', 'consistent'],
-    // https://eslint.org/docs/rules/array-bracket-spacing
+    // https://eslint.org/docs/latest/rules/array-bracket-spacing
     'array-bracket-spacing': ['error', 'never'],
-    // https://eslint.org/docs/rules/array-element-newline
+    // https://eslint.org/docs/latest/rules/array-element-newline
     'array-element-newline': ['error', 'consistent'],
-    // https://eslint.org/docs/rules/block-spacing
+    // https://eslint.org/docs/latest/rules/block-spacing
     'block-spacing': ['error', 'always'],
-    // https://eslint.org/docs/rules/brace-style
+    // https://eslint.org/docs/latest/rules/brace-style
     'brace-style': ['error', '1tbs', { allowSingleLine: true }],
-    // https://eslint.org/docs/rules/camelcase
+    // https://eslint.org/docs/latest/rules/camelcase
     camelcase: [
       'error',
       {
@@ -405,11 +441,11 @@ export const core: Linter.Config = {
         properties: 'never',
       },
     ],
-    // https://eslint.org/docs/rules/capitalized-comments
+    // https://eslint.org/docs/latest/rules/capitalized-comments
     'capitalized-comments': 'off',
-    // https://eslint.org/docs/rules/comma-dangle
+    // https://eslint.org/docs/latest/rules/comma-dangle
     'comma-dangle': ['error', 'always-multiline'],
-    // https://eslint.org/docs/rules/comma-spacing
+    // https://eslint.org/docs/latest/rules/comma-spacing
     'comma-spacing': [
       'error',
       {
@@ -417,37 +453,37 @@ export const core: Linter.Config = {
         after: true,
       },
     ],
-    // https://eslint.org/docs/rules/comma-style
+    // https://eslint.org/docs/latest/rules/comma-style
     'comma-style': ['error', 'last'],
-    // https://eslint.org/docs/rules/computed-property-spacing
+    // https://eslint.org/docs/latest/rules/computed-property-spacing
     'computed-property-spacing': ['error', 'never'],
-    // https://eslint.org/docs/rules/consistent-this
+    // https://eslint.org/docs/latest/rules/consistent-this
     'consistent-this': ['error', 'self'],
-    // https://eslint.org/docs/rules/eol-last
+    // https://eslint.org/docs/latest/rules/eol-last
     'eol-last': ['error', 'always'],
-    // https://eslint.org/docs/rules/func-call-spacing
+    // https://eslint.org/docs/latest/rules/func-call-spacing
     'func-call-spacing': ['error', 'never'],
-    // https://eslint.org/docs/rules/func-name-matching
+    // https://eslint.org/docs/latest/rules/func-name-matching
     'func-name-matching': ['error', 'always', { considerPropertyDescriptor: true }],
-    // https://eslint.org/docs/rules/func-names
+    // https://eslint.org/docs/latest/rules/func-names
     'func-names': 'off',
-    // https://eslint.org/docs/rules/func-style
+    // https://eslint.org/docs/latest/rules/func-style
     'func-style': 'off',
-    // https://eslint.org/docs/rules/function-paren-newline
+    // https://eslint.org/docs/latest/rules/function-paren-newline
     'function-paren-newline': ['error', 'multiline'],
-    // https://eslint.org/docs/rules/id-blacklist
-    'id-blacklist': 'off',
-    // https://eslint.org/docs/rules/id-length
+    // https://eslint.org/docs/latest/rules/id-denylist
+    'id-denylist': 'off',
+    // https://eslint.org/docs/latest/rules/id-length
     'id-length': 'off',
-    // https://eslint.org/docs/rules/id-match
+    // https://eslint.org/docs/latest/rules/id-match
     'id-match': 'off',
-    // https://eslint.org/docs/rules/implicit-arrow-linebreak
+    // https://eslint.org/docs/latest/rules/implicit-arrow-linebreak
     'implicit-arrow-linebreak': ['error', 'beside'],
-    // https://eslint.org/docs/rules/indent
+    // https://eslint.org/docs/latest/rules/indent
     indent: 'off',
-    // https://eslint.org/docs/rules/jsx-quotes
+    // https://eslint.org/docs/latest/rules/jsx-quotes
     'jsx-quotes': ['error', 'prefer-double'],
-    // https://eslint.org/docs/rules/key-spacing
+    // https://eslint.org/docs/latest/rules/key-spacing
     'key-spacing': [
       'error',
       {
@@ -456,7 +492,7 @@ export const core: Linter.Config = {
         mode: 'strict',
       },
     ],
-    // https://eslint.org/docs/rules/keyword-spacing
+    // https://eslint.org/docs/latest/rules/keyword-spacing
     'keyword-spacing': [
       'error',
       {
@@ -464,11 +500,11 @@ export const core: Linter.Config = {
         after: true,
       },
     ],
-    // https://eslint.org/docs/rules/line-comment-position
+    // https://eslint.org/docs/latest/rules/line-comment-position
     'line-comment-position': 'off',
-    // https://eslint.org/docs/rules/linebreak-style
+    // https://eslint.org/docs/latest/rules/linebreak-style
     'linebreak-style': ['error', 'unix'],
-    // https://eslint.org/docs/rules/lines-around-comment
+    // https://eslint.org/docs/latest/rules/lines-around-comment
     'lines-around-comment': [
       'error',
       {
@@ -486,11 +522,11 @@ export const core: Linter.Config = {
         allowArrayEnd: false,
       },
     ],
-    // https://eslint.org/docs/rules/lines-between-class-members
+    // https://eslint.org/docs/latest/rules/lines-between-class-members
     'lines-between-class-members': ['error', 'always'],
-    // https://eslint.org/docs/rules/max-depth
-    'max-depth': ['warn', 30],
-    // https://eslint.org/docs/rules/max-len
+    // https://eslint.org/docs/latest/rules/max-depth
+    'max-depth': ['error', 30],
+    // https://eslint.org/docs/latest/rules/max-len
     'max-len': [
       'error',
       {
@@ -504,24 +540,24 @@ export const core: Linter.Config = {
         ignoreRegExpLiterals: true,
       },
     ],
-    // https://eslint.org/docs/rules/max-lines
+    // https://eslint.org/docs/latest/rules/max-lines
     'max-lines': 'off',
-    // https://eslint.org/docs/rules/max-lines-per-function
+    // https://eslint.org/docs/latest/rules/max-lines-per-function
     'max-lines-per-function': 'off',
-    // https://eslint.org/docs/rules/max-nested-callbacks
-    'max-nested-callbacks': ['warn', 9],
-    // https://eslint.org/docs/rules/max-params
+    // https://eslint.org/docs/latest/rules/max-nested-callbacks
+    'max-nested-callbacks': ['error', 9],
+    // https://eslint.org/docs/latest/rules/max-params
     'max-params': 'off',
-    // https://eslint.org/docs/rules/max-statements
+    // https://eslint.org/docs/latest/rules/max-statements
     'max-statements': 'off',
-    // https://eslint.org/docs/rules/max-statements-per-line
+    // https://eslint.org/docs/latest/rules/max-statements-per-line
     'max-statements-per-line': ['error', { max: 1 }],
-    // https://eslint.org/docs/rules/multiline-comment-style
+    // https://eslint.org/docs/latest/rules/multiline-comment-style
     'multiline-comment-style': 'off',
     // 'multiline-comment-style': ['error', 'starred-block'],
-    // https://eslint.org/docs/rules/multiline-ternary
+    // https://eslint.org/docs/latest/rules/multiline-ternary
     'multiline-ternary': ['error', 'never'],
-    // https://eslint.org/docs/rules/new-cap
+    // https://eslint.org/docs/latest/rules/new-cap
     'new-cap': 'off',
     '@babel/new-cap': [
       'error',
@@ -531,27 +567,27 @@ export const core: Linter.Config = {
         properties: true,
       },
     ],
-    // https://eslint.org/docs/rules/new-parens
+    // https://eslint.org/docs/latest/rules/new-parens
     'new-parens': 'error',
-    // https://eslint.org/docs/rules/newline-per-chained-call
+    // https://eslint.org/docs/latest/rules/newline-per-chained-call
     'newline-per-chained-call': 'off',
-    // https://eslint.org/docs/rules/no-array-constructor
+    // https://eslint.org/docs/latest/rules/no-array-constructor
     'no-array-constructor': 'error',
-    // https://eslint.org/docs/rules/no-bitwise
+    // https://eslint.org/docs/latest/rules/no-bitwise
     'no-bitwise': 'error',
-    // https://eslint.org/docs/rules/no-continue
+    // https://eslint.org/docs/latest/rules/no-continue
     'no-continue': 'off',
-    // https://eslint.org/docs/rules/no-inline-comments
+    // https://eslint.org/docs/latest/rules/no-inline-comments
     'no-inline-comments': 'off',
-    // https://eslint.org/docs/rules/no-lonely-if
+    // https://eslint.org/docs/latest/rules/no-lonely-if
     'no-lonely-if': 'error',
-    // https://eslint.org/docs/rules/no-mixed-operators
+    // https://eslint.org/docs/latest/rules/no-mixed-operators
     'no-mixed-operators': 'off',
-    // https://eslint.org/docs/rules/no-mixed-spaces-and-tabs
+    // https://eslint.org/docs/latest/rules/no-mixed-spaces-and-tabs
     'no-mixed-spaces-and-tabs': 'error',
-    // https://eslint.org/docs/rules/no-multi-assign
+    // https://eslint.org/docs/latest/rules/no-multi-assign
     'no-multi-assign': 'error',
-    // https://eslint.org/docs/rules/no-multiple-empty-lines
+    // https://eslint.org/docs/latest/rules/no-multiple-empty-lines
     'no-multiple-empty-lines': [
       'error',
       {
@@ -560,21 +596,21 @@ export const core: Linter.Config = {
         maxBOF: 1,
       },
     ],
-    // https://eslint.org/docs/rules/no-negated-condition
+    // https://eslint.org/docs/latest/rules/no-negated-condition
     'no-negated-condition': 'off',
-    // https://eslint.org/docs/rules/no-nested-ternary
+    // https://eslint.org/docs/latest/rules/no-nested-ternary
     'no-nested-ternary': 'off',
-    // https://eslint.org/docs/rules/no-new-object
+    // https://eslint.org/docs/latest/rules/no-new-object
     'no-new-object': 'error',
-    // https://eslint.org/docs/rules/no-plusplus
+    // https://eslint.org/docs/latest/rules/no-plusplus
     'no-plusplus': 'off',
-    // https://eslint.org/docs/rules/no-restricted-syntax
+    // https://eslint.org/docs/latest/rules/no-restricted-syntax
     'no-restricted-syntax': 'off',
-    // https://eslint.org/docs/rules/no-tabs
+    // https://eslint.org/docs/latest/rules/no-tabs
     'no-tabs': 'error',
-    // https://eslint.org/docs/rules/no-ternary
+    // https://eslint.org/docs/latest/rules/no-ternary
     'no-ternary': 'off',
-    // https://eslint.org/docs/rules/no-trailing-spaces
+    // https://eslint.org/docs/latest/rules/no-trailing-spaces
     'no-trailing-spaces': [
       'error',
       {
@@ -582,22 +618,22 @@ export const core: Linter.Config = {
         skipBlankLines: false,
       },
     ],
-    // https://eslint.org/docs/rules/no-underscore-dangle
+    // https://eslint.org/docs/latest/rules/no-underscore-dangle
     'no-underscore-dangle': 'off',
-    // https://eslint.org/docs/rules/no-unneeded-ternary
+    // https://eslint.org/docs/latest/rules/no-unneeded-ternary
     'no-unneeded-ternary': ['error', { defaultAssignment: true }],
-    // https://eslint.org/docs/rules/no-whitespace-before-property
+    // https://eslint.org/docs/latest/rules/no-whitespace-before-property
     'no-whitespace-before-property': 'error',
-    // https://eslint.org/docs/rules/nonblock-statement-body-position
+    // https://eslint.org/docs/latest/rules/nonblock-statement-body-position
     'nonblock-statement-body-position': ['error', 'beside'],
-    // https://eslint.org/docs/rules/object-curly-newline
+    // https://eslint.org/docs/latest/rules/object-curly-newline
     'object-curly-newline': ['error', { multiline: true }],
-    // https://eslint.org/docs/rules/object-curly-spacing
+    // https://eslint.org/docs/latest/rules/object-curly-spacing
     'object-curly-spacing': 'off',
     '@babel/object-curly-spacing': ['error', 'always'],
-    // https://eslint.org/docs/rules/object-property-newline
+    // https://eslint.org/docs/latest/rules/object-property-newline
     'object-property-newline': 'off',
-    // https://eslint.org/docs/rules/one-var
+    // https://eslint.org/docs/latest/rules/one-var
     'one-var': 'off',
     // 'one-var': [
     //   'error',
@@ -606,21 +642,21 @@ export const core: Linter.Config = {
     //     uninitialized: 'consecutive',
     //   },
     // ],
-    // https://eslint.org/docs/rules/one-var-declaration-per-line
+    // https://eslint.org/docs/latest/rules/one-var-declaration-per-line
     'one-var-declaration-per-line': ['error', 'initializations'],
-    // https://eslint.org/docs/rules/operator-assignment
+    // https://eslint.org/docs/latest/rules/operator-assignment
     'operator-assignment': ['error', 'always'],
-    // https://eslint.org/docs/rules/operator-linebreak
+    // https://eslint.org/docs/latest/rules/operator-linebreak
     'operator-linebreak': ['error', 'before'],
-    // https://eslint.org/docs/rules/padded-blocks
+    // https://eslint.org/docs/latest/rules/padded-blocks
     'padded-blocks': ['error', 'never'],
-    // https://eslint.org/docs/rules/padding-line-between-statements
+    // https://eslint.org/docs/latest/rules/padding-line-between-statements
     'padding-line-between-statements': 'off',
-    // https://eslint.org/docs/rules/prefer-object-spread
+    // https://eslint.org/docs/latest/rules/prefer-object-spread
     'prefer-object-spread': 'error',
-    // https://eslint.org/docs/rules/quote-props
+    // https://eslint.org/docs/latest/rules/quote-props
     'quote-props': ['error', 'as-needed'],
-    // https://eslint.org/docs/rules/quotes
+    // https://eslint.org/docs/latest/rules/quotes
     quotes: [
       'error',
       'single',
@@ -629,20 +665,20 @@ export const core: Linter.Config = {
         allowTemplateLiterals: true,
       },
     ],
-    // https://eslint.org/docs/rules/semi
+    // https://eslint.org/docs/latest/rules/semi
     semi: 'off',
     '@babel/semi': ['error', 'always'],
-    // https://eslint.org/docs/rules/semi-spacing
+    // https://eslint.org/docs/latest/rules/semi-spacing
     'semi-spacing': 'error',
-    // https://eslint.org/docs/rules/semi-style
+    // https://eslint.org/docs/latest/rules/semi-style
     'semi-style': ['error', 'last'],
-    // https://eslint.org/docs/rules/sort-keys
+    // https://eslint.org/docs/latest/rules/sort-keys
     'sort-keys': 'off',
-    // https://eslint.org/docs/rules/sort-vars
+    // https://eslint.org/docs/latest/rules/sort-vars
     'sort-vars': 'off',
-    // https://eslint.org/docs/rules/space-before-blocks
+    // https://eslint.org/docs/latest/rules/space-before-blocks
     'space-before-blocks': 'error',
-    // https://eslint.org/docs/rules/space-before-function-paren
+    // https://eslint.org/docs/latest/rules/space-before-function-paren
     'space-before-function-paren': [
       'error',
       {
@@ -651,11 +687,11 @@ export const core: Linter.Config = {
         named: 'never',
       },
     ],
-    // https://eslint.org/docs/rules/space-in-parens
+    // https://eslint.org/docs/latest/rules/space-in-parens
     'space-in-parens': ['error', 'never'],
-    // https://eslint.org/docs/rules/space-infix-ops
+    // https://eslint.org/docs/latest/rules/space-infix-ops
     'space-infix-ops': 'error',
-    // https://eslint.org/docs/rules/space-unary-ops
+    // https://eslint.org/docs/latest/rules/space-unary-ops
     'space-unary-ops': [
       'error',
       {
@@ -663,7 +699,7 @@ export const core: Linter.Config = {
         nonwords: false,
       },
     ],
-    // https://eslint.org/docs/rules/spaced-comment
+    // https://eslint.org/docs/latest/rules/spaced-comment
     'spaced-comment': [
       'error',
       'always',
@@ -679,27 +715,27 @@ export const core: Linter.Config = {
         },
       },
     ],
-    // https://eslint.org/docs/rules/switch-colon-spacing
+    // https://eslint.org/docs/latest/rules/switch-colon-spacing
     'switch-colon-spacing': 'error',
-    // https://eslint.org/docs/rules/template-tag-spacing
+    // https://eslint.org/docs/latest/rules/template-tag-spacing
     'template-tag-spacing': ['error', 'never'],
-    // https://eslint.org/docs/rules/unicode-bom
+    // https://eslint.org/docs/latest/rules/unicode-bom
     'unicode-bom': 'error',
-    // https://eslint.org/docs/rules/wrap-regex
+    // https://eslint.org/docs/latest/rules/wrap-regex
     'wrap-regex': 'off',
 
     /*
      * ECMAScript 6
-     * https://eslint.org/docs/rules/arrow-body-style
+     * https://eslint.org/docs/latest/rules/arrow-body-style
      */
     'arrow-body-style': 'off',
-    // https://eslint.org/docs/rules/arrow-parens
+    // https://eslint.org/docs/latest/rules/arrow-parens
     'arrow-parens': ['error', 'as-needed'],
-    // https://eslint.org/docs/rules/arrow-spacing
+    // https://eslint.org/docs/latest/rules/arrow-spacing
     'arrow-spacing': 'error',
-    // https://eslint.org/docs/rules/constructor-super
+    // https://eslint.org/docs/latest/rules/constructor-super
     'constructor-super': 'error',
-    // https://eslint.org/docs/rules/generator-star-spacing
+    // https://eslint.org/docs/latest/rules/generator-star-spacing
     'generator-star-spacing': [
       'error',
       {
@@ -707,35 +743,35 @@ export const core: Linter.Config = {
         after: true,
       },
     ],
-    // https://eslint.org/docs/rules/no-class-assign
+    // https://eslint.org/docs/latest/rules/no-class-assign
     'no-class-assign': 'error',
-    // https://eslint.org/docs/rules/no-confusing-arrow
+    // https://eslint.org/docs/latest/rules/no-confusing-arrow
     'no-confusing-arrow': ['error', { allowParens: true }],
-    // https://eslint.org/docs/rules/no-const-assign
+    // https://eslint.org/docs/latest/rules/no-const-assign
     'no-const-assign': 'error',
-    // https://eslint.org/docs/rules/no-dupe-class-members
+    // https://eslint.org/docs/latest/rules/no-dupe-class-members
     'no-dupe-class-members': 'error',
-    // https://eslint.org/docs/rules/no-duplicate-imports
+    // https://eslint.org/docs/latest/rules/no-duplicate-imports
     'no-duplicate-imports': 'error',
-    // https://eslint.org/docs/rules/no-new-symbol
+    // https://eslint.org/docs/latest/rules/no-new-symbol
     'no-new-symbol': 'error',
-    // https://eslint.org/docs/rules/no-restricted-imports
+    // https://eslint.org/docs/latest/rules/no-restricted-imports
     'no-restricted-imports': 'error',
-    // https://eslint.org/docs/rules/no-this-before-super
+    // https://eslint.org/docs/latest/rules/no-this-before-super
     'no-this-before-super': 'error',
-    // https://eslint.org/docs/rules/no-useless-computed-key
+    // https://eslint.org/docs/latest/rules/no-useless-computed-key
     'no-useless-computed-key': 'error',
-    // https://eslint.org/docs/rules/no-useless-constructor
+    // https://eslint.org/docs/latest/rules/no-useless-constructor
     'no-useless-constructor': 'error',
-    // https://eslint.org/docs/rules/no-useless-rename
+    // https://eslint.org/docs/latest/rules/no-useless-rename
     'no-useless-rename': 'error',
-    // https://eslint.org/docs/rules/no-var
+    // https://eslint.org/docs/latest/rules/no-var
     'no-var': 'error',
-    // https://eslint.org/docs/rules/object-shorthand
+    // https://eslint.org/docs/latest/rules/object-shorthand
     'object-shorthand': ['error', 'always'],
-    // https://eslint.org/docs/rules/prefer-arrow-callback
+    // https://eslint.org/docs/latest/rules/prefer-arrow-callback
     'prefer-arrow-callback': 'off',
-    // https://eslint.org/docs/rules/prefer-const
+    // https://eslint.org/docs/latest/rules/prefer-const
     'prefer-const': [
       'error',
       {
@@ -743,7 +779,7 @@ export const core: Linter.Config = {
         ignoreReadBeforeAssign: true,
       },
     ],
-    // https://eslint.org/docs/rules/prefer-destructuring
+    // https://eslint.org/docs/latest/rules/prefer-destructuring
     'prefer-destructuring': [
       'error',
       {
@@ -752,28 +788,28 @@ export const core: Linter.Config = {
       },
       { enforceForRenamedProperties: false },
     ],
-    // https://eslint.org/docs/rules/prefer-numeric-literals
+    // https://eslint.org/docs/latest/rules/prefer-numeric-literals
     'prefer-numeric-literals': 'error',
-    // https://eslint.org/docs/rules/prefer-rest-params
+    // https://eslint.org/docs/latest/rules/prefer-rest-params
     'prefer-rest-params': 'error',
-    // https://eslint.org/docs/rules/prefer-spread
+    // https://eslint.org/docs/latest/rules/prefer-spread
     'prefer-spread': 'error',
-    // https://eslint.org/docs/rules/prefer-template
+    // https://eslint.org/docs/latest/rules/prefer-template
     'prefer-template': 'error',
-    // https://eslint.org/docs/rules/require-yield
+    // https://eslint.org/docs/latest/rules/require-yield
     'require-yield': 'error',
-    // https://eslint.org/docs/rules/rest-spread-spacing
+    // https://eslint.org/docs/latest/rules/rest-spread-spacing
     'rest-spread-spacing': ['error', 'never'],
-    // https://eslint.org/docs/rules/sort-imports
+    // https://eslint.org/docs/latest/rules/sort-imports
     // prefer import/order
     'sort-imports': 'off',
-    // https://eslint.org/docs/rules/symbol-description
+    // https://eslint.org/docs/latest/rules/symbol-description
     'symbol-description': 'off',
-    // https://eslint.org/docs/rules/template-curly-spacing
+    // https://eslint.org/docs/latest/rules/template-curly-spacing
     'template-curly-spacing': ['error', 'never'],
-    // https://eslint.org/docs/rules/yield-star-spacing
+    // https://eslint.org/docs/latest/rules/yield-star-spacing
     'yield-star-spacing': ['error', 'after'],
-    // https://eslint.org/docs/rules/function-call-argument-newline
+    // https://eslint.org/docs/latest/rules/function-call-argument-newline
     'function-call-argument-newline': ['error', 'never'],
 
     'prettier/prettier': ['error', PrettierConfig],
@@ -781,103 +817,68 @@ export const core: Linter.Config = {
     /*
      * import
      * Static analysis
-     * https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-unresolved.md
+     * https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-unresolved.md
      */
     'import/no-unresolved': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/named.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/named.md
     // @bug
     'import/named': 'off',
     // 'import/named': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/default.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/default.md
     'import/default': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/namespace.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/namespace.md
     'import/namespace': ['error', { allowComputed: true }],
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-restricted-paths.md
-    'import/no-restricted-paths': 'warn',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-absolute-path.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-restricted-paths.md
+    'import/no-restricted-paths': 'off',
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-absolute-path.md
     'import/no-absolute-path': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-dynamic-require.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-dynamic-require.md
     'import/no-dynamic-require': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-internal-modules.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-internal-modules.md
     'import/no-internal-modules': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-unused-modules.md
-    // @bug
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-unused-modules.md
     'import/no-unused-modules': 'off',
-    // 'import/no-unused-modules': [
-    //   'error',
-    //   {
-    //     missingExports: false,
-    //     unusedExports: true,
-    //   },
-    // ],
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-webpack-loader-syntax.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-webpack-loader-syntax.md
     'import/no-webpack-loader-syntax': 'off',
 
     /*
      * Helpful warnings
-     * https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/export.md
+     * https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/export.md
      */
     'import/export': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-named-as-default.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-named-as-default.md
     'import/no-named-as-default': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-named-as-default-member.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-named-as-default-member.md
     'import/no-named-as-default-member': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-deprecated.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-deprecated.md
     // takes too many times to analysis
     // 'import/no-deprecated': 'error',
     'import/no-deprecated': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-extraneous-dependencies.md
     'import/no-extraneous-dependencies': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-mutable-exports.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-mutable-exports.md
     'import/no-mutable-exports': 'error',
 
     /*
      * Module systems
-     * https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/unambiguous.md
+     * https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/unambiguous.md
      */
     'import/unambiguous': 'off',
-
-    /*
-     * https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-commonjs.md
-     * @TIPS
-     * for the following 'require' usages:
-     * 1. dynamic module path -
-     *    explicitly declare `eslint-disable` when truly necessary
-     * 2. dependencies determined at runtime -
-     *    dynamic import,
-     *    or es6 import + tree shaking,
-     *    or explicitly declare `eslint-disable` when truly necessary
-     * 3. side effect module -
-     *    `import 'xxx'` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Import_a_module_for_its_side_effects_only)
-     * 4. async require or promise-loader -
-     *    dynamic import (`import('xxx').then()`)
-     * for 'modules.exports = jsonData' usage:
-     * solutions:
-     * #1: use JSON format
-     * #2: use es6 export
-     * export const wechatPayGray = 'xxxx'
-     * #3: export named object
-     * const iconPath = {
-     *   wechatPayGray: 'xxxx',
-     *   // ...
-     * }
-     * export default iconPath
-     */
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-commonjs.md
     'import/no-commonjs': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-amd.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-amd.md
     'import/no-amd': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-nodejs-modules.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-nodejs-modules.md
     'import/no-nodejs-modules': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/first.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/first.md
     'import/first': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/exports-last.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/exports-last.md
     'import/exports-last': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-duplicates.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-duplicates.md
     'import/no-duplicates': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-namespace.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-namespace.md
     'import/no-namespace': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/extensions.md
-    // @bug
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/extensions.md
     'import/extensions': 'off',
     // 'import/extensions': [
     //   'error',
@@ -893,7 +894,7 @@ export const core: Linter.Config = {
     //     cjsx: 'never',
     //   },
     // ],
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/order.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/order.md
     'import/order': [
       'error',
       {
@@ -914,36 +915,34 @@ export const core: Linter.Config = {
         ],
       },
     ],
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/newline-after-import.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/newline-after-import.md
     'import/newline-after-import': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/prefer-default-export.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/prefer-default-export.md
     'import/prefer-default-export': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/max-dependencies.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/max-dependencies.md
     'import/max-dependencies': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-unassigned-import.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-unassigned-import.md
     'import/no-unassigned-import': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-named-default.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-named-default.md
     'import/no-named-default': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-anonymous-default-export.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-anonymous-default-export.md
     'import/no-anonymous-default-export': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/group-exports.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/group-exports.md
     'import/group-exports': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-self-import.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-self-import.md
     'import/no-self-import': 'error',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-default-export.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-default-export.md
     'import/no-default-export': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-named-export.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-named-export.md
     'import/no-named-export': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-useless-path-segments.md
-    'import/no-useless-path-segments': ['error'],
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-cycle.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-useless-path-segments.md
+    'import/no-useless-path-segments': 'error',
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-cycle.md
     'import/no-cycle': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/dynamic-import-chunkname.md
-    // @TODO
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/dynamic-import-chunkname.md
     'import/dynamic-import-chunkname': 'off',
-    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-relative-parent-imports.md
+    // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-relative-parent-imports.md
     'import/no-relative-parent-imports': 'off',
-    // 'import/no-relative-parent-imports': 'error',
 
     /**
      * eslint-comments
@@ -981,47 +980,49 @@ export const core: Linter.Config = {
 
     /*
      * promise
-     * https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/catch-or-return.md
+     * https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/catch-or-return.md
      */
     'promise/catch-or-return': 'off',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/no-return-wrap.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/no-return-wrap.md
     'promise/no-return-wrap': 'error',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/param-names.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/param-names.md
     'promise/param-names': 'error',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/always-return.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/always-return.md
     'promise/always-return': 'off',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/no-native.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/no-native.md
     'promise/no-native': 'off',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/no-nesting.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/no-nesting.md
     'promise/no-nesting': 'error',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/no-promise-in-callback.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/no-promise-in-callback.md
     'promise/no-promise-in-callback': 'off',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/no-callback-in-promise.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/no-callback-in-promise.md
     'promise/no-callback-in-promise': 'off',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/avoid-new.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/avoid-new.md
     'promise/avoid-new': 'off',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/no-new-statics.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/no-new-statics.md
     'promise/no-new-statics': 'error',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/valid-params.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/no-return-in-finally.md
+    'promise/no-return-in-finally': 'error',
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/valid-params.md
     'promise/valid-params': 'error',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/prefer-await-to-then.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/prefer-await-to-then.md
     'promise/prefer-await-to-then': 'error',
-    // https://github.com/xjamundx/eslint-plugin-promise/blob/master/docs/rules/prefer-await-to-callbacks.md
+    // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/prefer-await-to-callbacks.md
     'promise/prefer-await-to-callbacks': 'off',
 
     // https://www.npmjs.com/package/eslint-plugin-file-progress
     'file-progress/activate': 'warn',
   },
   settings: {
-    'import/extensions': FileExtensions,
+    'import/extensions': [...FileExtensions],
     'import/ignore': ['@babel/', 'typescript'],
-    'import/resolver': { node: { extensions: FileExtensions } },
+    'import/resolver': { node: { extensions: [...FileExtensions] } },
   },
   // https://eslint.org/docs/user-guide/configuring#configuration-based-on-glob-patterns
   // https://eslint.org/docs/user-guide/migrating-to-6.0.0#-overrides-in-an-extended-config-file-can-now-be-overridden-by-a-parent-config-file
   overrides: [
     {
-      files: [...TSFilePatterns],
+      files: mapElementWithPrefix(TSFileExtensions, '*'),
       // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser
       parser: '@typescript-eslint/parser',
       parserOptions: {
@@ -1032,29 +1033,68 @@ export const core: Linter.Config = {
       plugins: ['@typescript-eslint'],
       // @bug
       // extends: ['plugin:@typescript-eslint/recommended'],
-      // https://github.com/benmosher/eslint-plugin-import/blob/master/config/typescript.js
+      // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/config/typescript.js
       settings: {
         'import/external-module-folders': ['node_modules', 'node_modules/@types'],
-        'import/parsers': { '@typescript-eslint/parser': [...TSFilePatterns] },
-        'import/resolver': { node: { extensions: [...FileExtensions] } },
+        'import/parsers': { '@typescript-eslint/parser': [...TSFileExtensions] },
+        'import/resolver': {
+          node: { extensions: [...FileExtensions] },
+          typescript: {
+            extensionAlias: {
+              '.js': [...TSFileExtensions, ...mapElementWithPrefix(TSFileExtensions, '.d'), '.js'],
+              '.jsx': [
+                ...TSFileExtensions,
+                ...mapElementWithPrefix(TSFileExtensions, '.d'),
+                '.jsx',
+              ].filter(ext => ext.endsWith('x')),
+              '.cjs': [...CTSFileExtensions, ...CJSFileExtensions],
+              '.mjs': [...MTSFileExtensions, ...MJSFileExtensions],
+            },
+            project: './tsconfig.json',
+          },
+        },
       },
       rules: {
-        // https://github.com/benmosher/eslint-plugin-import/blob/master/config/typescript.js
-        // subset of typescript rules
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/config/typescript.js
+        /**
+         * prefer type checker
+         */
+        // https://eslint.org/docs/latest/rules/array-callback-return
         'array-callback-return': 'off',
+        // https://eslint.org/docs/latest/rules/no-dupe-else-if
+        'no-dupe-else-if': 'off',
+        // https://eslint.org/docs/latest/rules/no-import-assign
+        'no-import-assign': 'off',
+        // https://eslint.org/docs/latest/rules/no-undef
         'no-undef': 'off',
-        'prefer-named-capture-group': 'off',
+        // https://eslint.org/docs/latest/rules/no-unsafe-optional-chaining
+        'no-unsafe-optional-chaining': 'off',
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/default.md
+        'import/default': 'off',
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/export.md
         'import/export': 'off',
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/named.md
+        'import/named': 'off',
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/namespace.md
         'import/namespace': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-non-null-asserted-optional-chain.md
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-unresolved.md
+        'import/no-unresolved': 'off',
+        // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/no-new-statics.md
+        'promise/no-new-statics': 'off',
+        // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/no-return-in-finally.md
+        'promise/no-return-in-finally': 'off',
+        // https://github.com/xjamundx/eslint-plugin-promise/blob/HEAD/docs/rules/valid-params.md
+        'promise/valid-params': 'off',
+
+        // https://typescript-eslint.io/rules/no-non-null-asserted-optional-chain
         '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/adjacent-overload-signatures.md
+        // https://typescript-eslint.io/rules/adjacent-overload-signatures
         '@typescript-eslint/adjacent-overload-signatures': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/array-type.md
+        // https://typescript-eslint.io/rules/array-type
         '@typescript-eslint/array-type': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/await-thenable.md
+        // https://typescript-eslint.io/rules/await-thenable
         '@typescript-eslint/await-thenable': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-ts-comment.md
+        // https://typescript-eslint.io/rules/ban-ts-comment
         '@typescript-eslint/ban-ts-comment': [
           'error',
           {
@@ -1064,15 +1104,15 @@ export const core: Linter.Config = {
             'ts-nocheck': true,
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-types.md
+        // https://typescript-eslint.io/rules/ban-types
         '@typescript-eslint/ban-types': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/ban-tslint-comment.md
+        // https://typescript-eslint.io/rules/ban-tslint-comment
         '@typescript-eslint/ban-tslint-comment': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/class-literal-property-style.md
+        // https://typescript-eslint.io/rules/class-literal-property-style
         '@typescript-eslint/class-literal-property-style': ['error', 'fields'],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-indexed-object-style.md
+        // https://typescript-eslint.io/rules/consistent-indexed-object-style
         '@typescript-eslint/consistent-indexed-object-style': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-assertions.md
+        // https://typescript-eslint.io/rules/consistent-type-assertions
         '@typescript-eslint/consistent-type-assertions': [
           'error',
           {
@@ -1080,22 +1120,22 @@ export const core: Linter.Config = {
             objectLiteralTypeAssertions: 'never',
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-definitions.md
+        // https://typescript-eslint.io/rules/consistent-type-definitions
         '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/consistent-type-imports.md
+        // https://typescript-eslint.io/rules/consistent-type-imports
         'no-duplicate-imports': 'off',
         '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-function-return-type.md
+        // https://typescript-eslint.io/rules/explicit-function-return-type
         '@typescript-eslint/explicit-function-return-type': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
+        // https://typescript-eslint.io/rules/explicit-member-accessibility
         '@typescript-eslint/explicit-member-accessibility': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-module-boundary-types.md
+        // https://typescript-eslint.io/rules/explicit-module-boundary-types
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         indent: 'off',
         '@typescript-eslint/indent': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-delimiter-style.md
+        // https://typescript-eslint.io/rules/member-delimiter-style
         '@typescript-eslint/member-delimiter-style': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/member-ordering.md
+        // https://typescript-eslint.io/rules/member-ordering
         // @bug no fixer available & conflict with @typescript-eslint/adjacent-overload-signatures
         '@typescript-eslint/member-ordering': 'off',
         // '@typescript-eslint/member-ordering': [
@@ -1215,9 +1255,9 @@ export const core: Linter.Config = {
         //     ],
         //   },
         // ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/method-signature-style.md
+        // https://typescript-eslint.io/rules/method-signature-style
         '@typescript-eslint/method-signature-style': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/naming-convention.md
+        // https://typescript-eslint.io/rules/naming-convention
         camelcase: 'off',
         '@typescript-eslint/naming-convention': [
           'error',
@@ -1236,64 +1276,64 @@ export const core: Linter.Config = {
             format: ['PascalCase'],
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-array-constructor.md
+        // https://typescript-eslint.io/rules/no-array-constructor
         'no-array-constructor': 'off',
         '@typescript-eslint/no-array-constructor': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-empty-interface.md
+        // https://typescript-eslint.io/rules/no-empty-interface
         '@typescript-eslint/no-empty-interface': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-explicit-any.md
+        // https://typescript-eslint.io/rules/no-explicit-any
         '@typescript-eslint/no-explicit-any': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extraneous-class.md
+        // https://typescript-eslint.io/rules/no-extraneous-class
         '@typescript-eslint/no-extraneous-class': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-for-in-array.md
+        // https://typescript-eslint.io/rules/no-for-in-array
         '@typescript-eslint/no-for-in-array': 'error',
         // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin/docs/rules/no-implicit-any-catch.md
         '@typescript-eslint/no-implicit-any-catch': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-invalid-void-type.md
+        // https://typescript-eslint.io/rules/no-invalid-void-type
         '@typescript-eslint/no-invalid-void-type': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-inferrable-types.md
+        // https://typescript-eslint.io/rules/no-inferrable-types
         '@typescript-eslint/no-inferrable-types': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-misused-new.md
+        // https://typescript-eslint.io/rules/no-misused-new
         '@typescript-eslint/no-misused-new': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-namespace.md
+        // https://typescript-eslint.io/rules/no-namespace
         '@typescript-eslint/no-namespace': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-base-to-string.md
+        // https://typescript-eslint.io/rules/no-base-to-string
         '@typescript-eslint/no-base-to-string': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-confusing-non-null-assertion.md
+        // https://typescript-eslint.io/rules/no-confusing-non-null-assertion
         '@typescript-eslint/no-confusing-non-null-assertion': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-confusing-void-expression.md
+        // https://typescript-eslint.io/rules/no-confusing-void-expression
         '@typescript-eslint/no-confusing-void-expression': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-non-null-assertion.md
+        // https://typescript-eslint.io/rules/no-non-null-assertion
         '@typescript-eslint/no-non-null-assertion': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extra-non-null-assertion.md
+        // https://typescript-eslint.io/rules/no-extra-non-null-assertion
         '@typescript-eslint/no-extra-non-null-assertion': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-parameter-properties.md
+        // https://typescript-eslint.io/rules/no-parameter-properties
         '@typescript-eslint/no-parameter-properties': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-require-imports.md
+        // https://typescript-eslint.io/rules/no-require-imports
         '@typescript-eslint/no-require-imports': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-this-alias.md
+        // https://typescript-eslint.io/rules/no-this-alias
         '@typescript-eslint/no-this-alias': ['error', { allowDestructuring: true }],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-type-alias.md
+        // https://typescript-eslint.io/rules/no-type-alias
         '@typescript-eslint/no-type-alias': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-boolean-literal-compare.md
+        // https://typescript-eslint.io/rules/no-unnecessary-boolean-literal-compare
         '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-condition.md
+        // https://typescript-eslint.io/rules/no-unnecessary-condition
         '@typescript-eslint/no-unnecessary-condition': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-qualifier.md
+        // https://typescript-eslint.io/rules/no-unnecessary-qualifier
         '@typescript-eslint/no-unnecessary-qualifier': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-type-assertion.md
+        // https://typescript-eslint.io/rules/no-unnecessary-type-assertion
         '@typescript-eslint/no-unnecessary-type-assertion': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unnecessary-type-constraint.md
+        // https://typescript-eslint.io/rules/no-unnecessary-type-constraint
         '@typescript-eslint/no-unnecessary-type-constraint': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unsafe-assignment.md
+        // https://typescript-eslint.io/rules/no-unsafe-assignment
         '@typescript-eslint/no-unsafe-assignment': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unsafe-call.md
+        // https://typescript-eslint.io/rules/no-unsafe-call
         '@typescript-eslint/no-unsafe-call': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unsafe-member-access.md
+        // https://typescript-eslint.io/rules/no-unsafe-member-access
         '@typescript-eslint/no-unsafe-member-access': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unsafe-return.md
+        // https://typescript-eslint.io/rules/no-unsafe-return
         '@typescript-eslint/no-unsafe-return': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unused-vars.md
+        // https://typescript-eslint.io/rules/no-unused-vars
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': [
           'error',
@@ -1306,7 +1346,7 @@ export const core: Linter.Config = {
           },
         ],
         '@babel/no-unused-expressions': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-unused-expressions.md
+        // https://typescript-eslint.io/rules/no-unused-expressions
         '@typescript-eslint/no-unused-expressions': [
           'error',
           {
@@ -1314,7 +1354,7 @@ export const core: Linter.Config = {
             enforceForJSX: true,
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md
+        // https://typescript-eslint.io/rules/no-use-before-define
         'no-use-before-define': 'off',
         '@typescript-eslint/no-use-before-define': [
           'error',
@@ -1324,54 +1364,54 @@ export const core: Linter.Config = {
             variables: false,
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-useless-constructor.md
+        // https://typescript-eslint.io/rules/no-useless-constructor
         'no-useless-constructor': 'off',
         '@typescript-eslint/no-useless-constructor': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-var-requires.md
+        // https://typescript-eslint.io/rules/no-var-requires
         '@typescript-eslint/no-var-requires': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-as-const.md
+        // https://typescript-eslint.io/rules/prefer-as-const
         '@typescript-eslint/prefer-as-const': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-enum-initializers.md
+        // https://typescript-eslint.io/rules/prefer-enum-initializers
         '@typescript-eslint/prefer-enum-initializers': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-for-of.md
+        // https://typescript-eslint.io/rules/prefer-for-of
         '@typescript-eslint/prefer-for-of': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-function-type.md
+        // https://typescript-eslint.io/rules/prefer-function-type
         '@typescript-eslint/prefer-function-type': 'error',
         // https://github.com/typescript-eslint/typescript-eslint/pull/294
         '@typescript-eslint/prefer-includes': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-namespace-keyword.md
+        // https://typescript-eslint.io/rules/prefer-namespace-keyword
         '@typescript-eslint/prefer-namespace-keyword': 'off',
         // https://github.com/typescript-eslint/typescript-eslint/pull/289
         '@typescript-eslint/prefer-string-starts-ends-with': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-literal-enum-member.md
+        // https://typescript-eslint.io/rules/prefer-literal-enum-member
         '@typescript-eslint/prefer-literal-enum-member': [
           'error',
           { allowBitwiseExpressions: true },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-optional-chain.md
+        // https://typescript-eslint.io/rules/prefer-optional-chain
         '@typescript-eslint/prefer-optional-chain': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-nullish-coalescing.md
+        // https://typescript-eslint.io/rules/prefer-nullish-coalescing
         '@typescript-eslint/prefer-nullish-coalescing': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-readonly-parameter-types.md
+        // https://typescript-eslint.io/rules/prefer-readonly-parameter-types
         '@typescript-eslint/prefer-readonly-parameter-types': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-reduce-type-parameter.md
+        // https://typescript-eslint.io/rules/prefer-reduce-type-parameter
         '@typescript-eslint/prefer-reduce-type-parameter': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-ts-expect-error.md
+        // https://typescript-eslint.io/rules/prefer-ts-expect-error
         '@typescript-eslint/prefer-ts-expect-error': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/promise-function-async.md
+        // https://typescript-eslint.io/rules/promise-function-async
         // @bug
         '@typescript-eslint/promise-function-async': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/require-array-sort-compare.md
+        // https://typescript-eslint.io/rules/require-array-sort-compare
         '@typescript-eslint/require-array-sort-compare': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/restrict-plus-operands.md
+        // https://typescript-eslint.io/rules/restrict-plus-operands
         '@typescript-eslint/restrict-plus-operands': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/restrict-template-expressions.md
+        // https://typescript-eslint.io/rules/restrict-template-expressions
         '@typescript-eslint/restrict-template-expressions': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/switch-exhaustiveness-check.md
+        // https://typescript-eslint.io/rules/switch-exhaustiveness-check
         '@typescript-eslint/switch-exhaustiveness-check': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/triple-slash-reference.md
+        // https://typescript-eslint.io/rules/triple-slash-reference
         '@typescript-eslint/triple-slash-reference': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/type-annotation-spacing.md
+        // https://typescript-eslint.io/rules/type-annotation-spacing
         '@typescript-eslint/type-annotation-spacing': [
           'error',
           {
@@ -1379,41 +1419,41 @@ export const core: Linter.Config = {
             after: true,
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/unbound-method.md
+        // https://typescript-eslint.io/rules/unbound-method
         // takes too many times to analysis
         // '@typescript-eslint/unbound-method': 'error',
         '@typescript-eslint/unbound-method': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/unified-signatures.md
+        // https://typescript-eslint.io/rules/unified-signatures
         '@typescript-eslint/unified-signatures': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/func-call-spacing.md
+        // https://typescript-eslint.io/rules/func-call-spacing
         'func-call-spacing': 'off',
         '@typescript-eslint/func-call-spacing': ['error', 'never'],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-magic-numbers.md
+        // https://typescript-eslint.io/rules/no-magic-numbers
         'no-magic-numbers': 'off',
         '@typescript-eslint/no-magic-numbers': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/semi.md
+        // https://typescript-eslint.io/rules/semi
         semi: 'off',
         '@typescript-eslint/semi': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-regexp-exec.md
+        // https://typescript-eslint.io/rules/prefer-regexp-exec
         '@typescript-eslint/prefer-regexp-exec': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-empty-function.md
+        // https://typescript-eslint.io/rules/no-empty-function
         'no-empty-function': 'off',
         '@typescript-eslint/no-empty-function': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-floating-promises.md
-        '@typescript-eslint/no-floating-promises': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/strict-boolean-expressions.md
+        // https://typescript-eslint.io/rules/no-floating-promises
+        '@typescript-eslint/no-floating-promises': 'error',
+        // https://typescript-eslint.io/rules/strict-boolean-expressions
         '@typescript-eslint/strict-boolean-expressions': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/prefer-readonly.md
+        // https://typescript-eslint.io/rules/prefer-readonly
         '@typescript-eslint/prefer-readonly': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-misused-promises.md
+        // https://typescript-eslint.io/rules/no-misused-promises
         '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/require-await.md
+        // https://typescript-eslint.io/rules/require-await
         'require-await': 'off',
         '@typescript-eslint/require-await': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/55eb0cfac20ccbc2e954083dd554dbcfcbed64fb/packages/eslint-plugin/docs/rules/return-await.md
+        // https://typescript-eslint.io/rules/return-await
         'no-return-await': 'off',
         '@typescript-eslint/return-await': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/typedef.md
+        // https://typescript-eslint.io/rules/typedef
         '@typescript-eslint/typedef': [
           'error',
           {
@@ -1427,15 +1467,15 @@ export const core: Linter.Config = {
             variableDeclarationIgnoreFunction: true,
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin//docs/rules/no-unnecessary-type-arguments.md
+        // https://github.com/typescript-eslint/typescript-eslint/blob/HEAD/packages/eslint-plugin//docs/rules/no-unnecessary-type-arguments.md
         '@typescript-eslint/no-unnecessary-type-arguments': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin//docs/rules/brace-style.md
+        // https://github.com/typescript-eslint/typescript-eslint/blob/HEAD/packages/eslint-plugin//docs/rules/brace-style.md
         'brace-style': 'off',
         '@typescript-eslint/brace-style': ['error', '1tbs', { allowSingleLine: true }],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/comma-dangle.md
+        // https://typescript-eslint.io/rules/comma-dangle
         'comma-dangle': 'off',
         '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/comma-spacing.md
+        // https://typescript-eslint.io/rules/comma-spacing
         'comma-spacing': 'off',
         '@typescript-eslint/comma-spacing': [
           'error',
@@ -1444,10 +1484,10 @@ export const core: Linter.Config = {
             after: true,
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/dot-notation.md
+        // https://typescript-eslint.io/rules/dot-notation
         'dot-notation': 'off',
         '@typescript-eslint/dot-notation': ['error', { allowKeywords: true }],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/keyword-spacing.md
+        // https://typescript-eslint.io/rules/keyword-spacing
         'keyword-spacing': 'off',
         '@typescript-eslint/keyword-spacing': [
           'error',
@@ -1456,28 +1496,28 @@ export const core: Linter.Config = {
             after: true,
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/lines-between-class-members.md
+        // https://typescript-eslint.io/rules/lines-between-class-members
         'lines-between-class-members': 'off',
         '@typescript-eslint/lines-between-class-members': ['error', 'always'],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-dupe-class-members.md
+        // https://typescript-eslint.io/rules/no-dupe-class-members
         'no-dupe-class-members': 'off',
         '@typescript-eslint/no-dupe-class-members': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extra-parens.md
+        // https://typescript-eslint.io/rules/no-extra-parens
         'no-extra-parens': 'off',
         '@typescript-eslint/no-extra-parens': ['error', 'all', { ignoreJSX: 'multi-line' }],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-extra-semi.md
+        // https://typescript-eslint.io/rules/no-extra-semi
         'no-extra-semi': 'off',
         '@typescript-eslint/no-extra-semi': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-implied-eval.md
+        // https://typescript-eslint.io/rules/no-implied-eval
         'no-implied-eval': 'off',
         '@typescript-eslint/no-implied-eval': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-loop-func.md
+        // https://typescript-eslint.io/rules/no-loop-func
         'no-loop-func': 'off',
         '@typescript-eslint/no-loop-func': 'error',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-redeclare.md
+        // https://typescript-eslint.io/rules/no-redeclare
         'no-redeclare': 'off',
         '@typescript-eslint/no-redeclare': ['error', { builtinGlobals: true }],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-shadow.md
+        // https://typescript-eslint.io/rules/no-shadow
         'no-shadow': 'off',
         '@typescript-eslint/no-shadow': [
           'error',
@@ -1486,10 +1526,10 @@ export const core: Linter.Config = {
             builtinGlobals: false,
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-throw-literal.md
+        // https://typescript-eslint.io/rules/no-throw-literal
         'no-throw-literal': 'off',
         '@typescript-eslint/no-throw-literal': 'off',
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/space-before-function-paren.md
+        // https://typescript-eslint.io/rules/space-before-function-paren
         'space-before-function-paren': 'off',
         '@typescript-eslint/space-before-function-paren': [
           'error',
@@ -1499,9 +1539,27 @@ export const core: Linter.Config = {
             named: 'never',
           },
         ],
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/space-infix-ops.md
+        // https://typescript-eslint.io/rules/space-infix-ops
         'space-infix-ops': 'off',
         '@typescript-eslint/space-infix-ops': 'error',
+      },
+    },
+    {
+      files: mapElementWithPrefix([...CJSFileExtensions, ...CTSFileExtensions], '*'),
+      rules: {
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-commonjs.md
+        'import/no-commonjs': 'off',
+        // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/no-dynamic-require.md
+        'import/no-dynamic-require': 'off',
+      },
+    },
+    {
+      files: mapElementWithPrefix(CTSFileExtensions, '*'),
+      rules: {
+        // https://typescript-eslint.io/rules/no-require-imports
+        '@typescript-eslint/no-require-imports': 'off',
+        // https://typescript-eslint.io/rules/no-var-requires
+        '@typescript-eslint/no-var-requires': 'off',
       },
     },
     {
