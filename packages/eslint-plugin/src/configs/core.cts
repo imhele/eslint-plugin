@@ -902,17 +902,7 @@ export const core: Linter.Config = {
           caseInsensitive: true,
           order: 'asc',
         },
-        groups: [['builtin', 'external'], 'parent', 'sibling', 'index'],
-        pathGroups: [
-          {
-            pattern: '@/**',
-            group: 'parent',
-          },
-          {
-            pattern: '@@/**',
-            group: 'external',
-          },
-        ],
+        groups: [['builtin', 'external', 'internal'], 'parent', 'sibling', 'index'],
       },
     ],
     // https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/newline-after-import.md
