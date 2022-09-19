@@ -372,12 +372,10 @@ export const react: Linter.Config = {
     'react-hooks2/exhaustive-deps': [
       'error',
       {
-        additionalHooks: '^use(ComponentDidUpdate|ImmedEffect)$',
         immediateRefHooks: '^use(.*Ref)$',
-        stableRefHooks: '^use(ClickOutside|Constant|.*Ref|.*RefCallback|RefGetter)$',
+        stableRefHooks: '^use(Constant|.*Ref|.*RefCallback|RefGetter)$',
         stableStateHooks: [
-          '^use(.*Model|CountDown|DOMRect|Immer|SearchParam(s|List)?|Storage)$',
-          '^use(.+)State$',
+          '^use(.*Model|.+State|Immer)$',
           ['^useForceUpdate$', 0],
           ['^useToggle$', [1, 2]],
         ],
