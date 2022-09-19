@@ -1595,6 +1595,7 @@ export const core: Linter.Config = {
       rules: {
         'no-unused-expressions': 'off',
         '@babel/no-unused-expressions': 'off',
+        '@typescript-eslint/no-floating-promises': 'off',
         '@typescript-eslint/no-unused-expressions': 'off',
       },
     },
