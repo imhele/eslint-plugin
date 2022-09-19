@@ -1,6 +1,6 @@
 {
   "name": "@imhele/rule-set-scripts",
-  "version": "0.1.2",
+  "version": "0.2.0-beta.0",
   "type": "module",
   "bin": {
     "x-eslint": "bin/x-eslint.mjs",
