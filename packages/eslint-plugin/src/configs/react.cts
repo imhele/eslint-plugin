@@ -377,7 +377,7 @@ export const react: Linter.Config = {
         stableStateHooks: [
           '^use(.*Model|.+State|Immer)$',
           ['^useForceUpdate$', 0],
-          ['^useToggle$', [1, 2]],
+          ['^useToggle$', [1, 2, 3]],
         ],
       },
     ],
